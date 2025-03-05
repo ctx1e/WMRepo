@@ -35,7 +35,7 @@ namespace WMAPI.Repository.Implementations
                 var check = await _context.Products
                     .FirstOrDefaultAsync(x => x.ProductName == productName && (productId == null || x.ProductId != productId));
 
-                return check != null;
+                return check == null;
             }
             catch (Exception)
             {

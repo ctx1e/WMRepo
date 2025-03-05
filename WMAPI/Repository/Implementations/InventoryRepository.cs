@@ -44,6 +44,8 @@ namespace WMAPI.Repository.Implementations
         public async Task<IEnumerable<Inventory>> GetAllInventories()
         => await _context.Inventories.ToListAsync();
 
+        public async Task<Inventory?> GetProductInInventoryByProductId(int id)
+        => await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == id);
 
         public async Task<bool> UpdateInventory(Inventory inventory)
         {
