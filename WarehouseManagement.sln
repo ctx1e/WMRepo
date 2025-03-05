@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35728.132 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMAPI", "WMAPI\WMAPI.csproj", "{49DDBFF1-5476-4D48-AE05-053195A6DCE4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMWeb", "VMWeb\VMWeb.csproj", "{D0756ADC-037B-4FB2-A01B-3310F2211347}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{49DDBFF1-5476-4D48-AE05-053195A6DCE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49DDBFF1-5476-4D48-AE05-053195A6DCE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49DDBFF1-5476-4D48-AE05-053195A6DCE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49DDBFF1-5476-4D48-AE05-053195A6DCE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0756ADC-037B-4FB2-A01B-3310F2211347}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0756ADC-037B-4FB2-A01B-3310F2211347}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0756ADC-037B-4FB2-A01B-3310F2211347}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0756ADC-037B-4FB2-A01B-3310F2211347}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

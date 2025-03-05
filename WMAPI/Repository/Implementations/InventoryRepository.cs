@@ -1,0 +1,62 @@
+﻿using Microsoft.EntityFrameworkCore;
+using WMAPI.Models;
+using WMAPI.Repository.Interfaces;
+
+namespace WMAPI.Repository.Implementations
+{
+    public class InventoryRepository : IInventoryRepository
+    {
+
+        private readonly WarehouseManagementContext _context;
+        public InventoryRepository(WarehouseManagementContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<bool> AddProductIntoInventory(Inventory inventory)
+        {
+            try
+            {
+                await _context.AddAsync(inventory);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteProductInInventory(Inventory inventory)
+        {
+            try
+            {
+                _context.Remove(inventory);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<Inventory>> GetAllInventories()
+        => await _context.Inventories.ToListAsync();
+
+
+        public async Task<bool> UpdateInventory(Inventory inventory)
+        {
+            try
+            {
+                 _context.Update(inventory);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+    }
+}
