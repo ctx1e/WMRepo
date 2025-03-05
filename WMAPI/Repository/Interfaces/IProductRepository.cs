@@ -6,7 +6,7 @@ namespace WMAPI.Repository.Interfaces
     {
         Task<IEnumerable<Product>> GetAllProducts();
         Task<Product?> GetProductById(int id);
-        Task<bool> CheckNameProduct(string productName);
+        Task<bool> CheckNameProduct(string productName, int? productId);
         Task<bool> AddProduct(Product product);
         Task<bool> UpdateProduct(Product product);
         Task<bool> DeleteProduct(Product product);

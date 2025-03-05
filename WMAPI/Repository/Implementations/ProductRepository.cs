@@ -26,18 +26,23 @@ namespace WMAPI.Repository.Implementations
             }
         }
 
-        public async Task<bool> CheckNameProduct(string productName)
+        public async Task<bool> CheckNameProduct(string productName, int? productId = null)
         {
             try
             {
-                var check = await _context.Products.FirstOrDefaultAsync(x => x.ProductName == productName);
-                if (check == null) return false;
-                return true;
+
+                // check for both add and update
+                var check = await _context.Products
+                    .FirstOrDefaultAsync(x => x.ProductName == productName && (productId == null || x.ProductId != productId));
+
+                return check != null;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return false;
             }
         }
+
 
         public async Task<bool> DeleteProduct(Product product)
         {

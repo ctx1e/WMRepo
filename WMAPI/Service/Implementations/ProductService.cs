@@ -22,7 +22,7 @@ namespace WMAPI.Service.Implementations
 
         public async Task<(bool IsSuccess, string Msg)> AddProduct(ProductDTO product)
         {
-            if (!(await _productRepository.CheckNameProduct(product.ProductName)))
+            if (!(await _productRepository.CheckNameProduct(product.ProductName, null)))
                 return (false, "Product Name is already existed!");
 
             var (msg, getUrlImg) = await UploadImageAsync(product.Image);
@@ -53,9 +53,15 @@ namespace WMAPI.Service.Implementations
             return (true, "Add product successfully");
         }
 
-        public Task<(bool IsSuccess, string Msg)> DeleteProduct(int id)
+        public async Task<(bool IsSuccess, string Msg)> DeleteProduct(int id)
         {
-            throw new NotImplementedException();
+            var (getProductById, msg) = await GetProductById(id);
+            if (getProductById == null) return (false, msg);
+
+            // Con thieu xoa di cac bang cam khoa product id
+            if (!(await _productRepository.DeleteProduct(getProductById)))
+                return (false, "Delete Product failed!");
+            return (true, "Delete Product successfully"); 
         }
 
         public async Task<(IEnumerable<Product> products, string Msg)> GetAllProducts()
@@ -81,18 +87,23 @@ namespace WMAPI.Service.Implementations
 
         public async Task<(bool IsSuccess, string Msg)> UpdateProduct(ProductDTO product)
         {
-            var (getProductById, msg) = await GetProductById(product.ProductId);
-            if (getProductById == null) return (false, msg);
+            var (getProductById, msgGetProductById) = await GetProductById(product.ProductId);
+            if (getProductById == null) return (false, msgGetProductById);
 
-            if (!(await _productRepository.CheckNameProduct(product.ProductName)))
+            if (!(await _productRepository.CheckNameProduct(product.ProductName, product.ProductId)))
                 return (false, "Product Name is already existed!");
+
+            // Check Img and get Url
+            var (msgGetUrlImg, getUrlImg) = await UploadImageAsync(product.Image);
+            if (getUrlImg == null) return (false, msgGetUrlImg);
+
 
             getProductById.ProductName = product.ProductName;
             getProductById.Category = product.Category;
             getProductById.Description = product.Description;
-            //getProductById.Image = product.Image;
-            //if (!(await _productRepository.UpdateProduct(product)))
-            //    return (false, "Update product failed!");
+            getProductById.Image = getUrlImg;
+            if (!(await _productRepository.UpdateProduct(getProductById)))
+                return (false, "Update product failed!");
 
             return (true, "Update product successfully");
         }
