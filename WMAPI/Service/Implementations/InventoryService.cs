@@ -12,10 +12,10 @@ namespace WMAPI.Service.Implementations
         {
             _inventoryRepository = inventoryRepository;
         }
-        public async Task<(bool IsSuccess, string Msg)> DeleteProductInInventory(int id)
+        public async Task<(bool IsSuccess, string Msg)> DeleteProductInInventory(int proId)
         {
-            var getInventory = await _inventoryRepository.GetProductInInventoryByProductId(id);
-            if (getInventory == null) return (false, "Not found Product" + id);
+            var getInventory = await _inventoryRepository.GetProductInInventoryByProductId(proId);
+            if (getInventory == null) return (false, "Not found Product" + proId);
 
             if (!(await _inventoryRepository.DeleteProductInInventory(getInventory)))
                 return (false, "Delete Product In Inventory failed!");

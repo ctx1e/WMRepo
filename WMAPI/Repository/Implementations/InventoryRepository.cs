@@ -44,14 +44,29 @@ namespace WMAPI.Repository.Implementations
         public async Task<IEnumerable<Inventory>> GetAllInventories()
         => await _context.Inventories.ToListAsync();
 
-        public async Task<Inventory?> GetProductInInventoryByProductId(int id)
-        => await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == id);
+        public async Task<Inventory?> GetProductInInventoryByProductId(int proId)
+        => await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == proId);
 
         public async Task<bool> UpdateInventory(Inventory inventory)
         {
             try
             {
                  _context.Update(inventory);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateMultiInventory(List<Inventory> inventories)
+        {
+            try
+            {
+                
+                _context.UpdateRange(inventories);
                 await _context.SaveChangesAsync();
                 return true;
             }

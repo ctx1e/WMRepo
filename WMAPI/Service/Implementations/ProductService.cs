@@ -10,12 +10,17 @@ namespace WMAPI.Service.Implementations
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly IWIDRepository _widRepository;
+        private readonly IWODRepository _wodRepository;
         private readonly IInventoryRepository _inventoryRepository;
         private readonly Cloudinary _cloudinary;
 
-        public ProductService(IProductRepository productRepository, IInventoryRepository inventoryRepository,Cloudinary cloudinary)
+        public ProductService(IProductRepository productRepository, IInventoryRepository inventoryRepository,Cloudinary cloudinary,
+            IWIDRepository widRepository, IWODRepository wodRepository)
         {
             _productRepository = productRepository;
+            _widRepository = widRepository;
+            _wodRepository = wodRepository; 
             _inventoryRepository = inventoryRepository;
             _cloudinary = cloudinary;
         }
@@ -53,12 +58,28 @@ namespace WMAPI.Service.Implementations
             return (true, "Add product successfully");
         }
 
-        public async Task<(bool IsSuccess, string Msg)> DeleteProduct(int id)
+        public async Task<(bool IsSuccess, string Msg)> DeleteProduct(int proId)
         {
-            var (getProductById, msg) = await GetProductById(id);
+            var (getProductById, msg) = await GetProductById(proId);
             if (getProductById == null) return (false, msg);
 
-            // Con thieu xoa di cac bang cam khoa product id
+            var getAllWIByProId = await _widRepository.GetAllWIByProductId(proId);
+            var getAllWOByProId = await _wodRepository.GetAllWOByProductId(proId);
+            foreach(var item in getAllWIByProId)
+            {
+                item.ProductId = 0;
+            }
+            foreach (var item in getAllWOByProId)
+            {
+                item.ProductId = 0;
+            }
+
+            if (!(await _widRepository.DeleteMultiWIDByInId(getAllWIByProId)))
+                return (false, "Delete WIDs By Product Id failed!");
+
+            if (!(await _wodRepository.DeleteMultiWODByInId(getAllWOByProId)))
+                return (false, "Delete WIDs By Product Id failed!");
+
             if (!(await _productRepository.DeleteProduct(getProductById)))
                 return (false, "Delete Product failed!");
             return (true, "Delete Product successfully"); 
@@ -75,9 +96,9 @@ namespace WMAPI.Service.Implementations
             return (getProducts, "get Products successfully");
         }
 
-        public async Task<(Product? product, string Msg)> GetProductById(int id)
+        public async Task<(Product? product, string Msg)> GetProductById(int proId)
         {
-            var getProductById = await _productRepository.GetProductById(id);
+            var getProductById = await _productRepository.GetProductById(proId);
             if (getProductById == null)
             {
                 return (null, "Not found product!");

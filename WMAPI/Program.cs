@@ -34,18 +34,22 @@ var builder = WebApplication.CreateBuilder(args);
     // Warehouse In repo and service
 
     builder.Services.AddScoped<IWarehouseInRepository, WarehouseInRepository>();
+    builder.Services.AddScoped<IWarehouseInService, WarehouseInService>();
 
     // Warehouse In Detail repo and service
 
     builder.Services.AddScoped<IWIDRepository, WIDRepository>();
+    builder.Services.AddScoped<IWIDService, WIDService>();
 
 
     // Warehouse Out repo and service
     builder.Services.AddScoped<IWarehouseOutRepository, WarehouseOutRepository>();
+    builder.Services.AddScoped<IWarehouseOutService, WarehouseOutService>();
 
 
     // Warehouse Out Detail repo and service
     builder.Services.AddScoped<IWODRepository, WODRepository>();
+    builder.Services.AddScoped<IWODService, WODService>();
 
 
     // Inventory repo and service

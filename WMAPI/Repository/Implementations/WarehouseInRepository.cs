@@ -1,4 +1,5 @@
-﻿using WMAPI.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using WMAPI.Models;
 using WMAPI.Repository.Interfaces;
 
 namespace WMAPI.Repository.Implementations
@@ -10,5 +11,37 @@ namespace WMAPI.Repository.Implementations
         {
             _context = context;
         }
+
+        public async Task<bool> AddWI(WarehouseIn warehouseIn)
+        {
+            try
+            {
+                await _context.AddAsync(warehouseIn);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception) { 
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteWI(WarehouseIn warehouseIn)
+        {
+            try
+            {
+                _context.Remove(warehouseIn);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception) {
+                return false;
+            }
+        }
+
+        public async Task<IEnumerable<WarehouseIn>> GetAllWI()
+        => await _context.WarehouseIns.ToListAsync();
+
+        public async Task<WarehouseIn?> GetWIById(int inId)
+        => await _context.WarehouseIns.FindAsync(inId);
     }
 }

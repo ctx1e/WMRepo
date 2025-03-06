@@ -26,14 +26,14 @@ namespace WMAPI.Repository.Implementations
             }
         }
 
-        public async Task<bool> CheckNameProduct(string productName, int? productId = null)
+        public async Task<bool> CheckNameProduct(string productName, int? proId = null)
         {
             try
             {
 
                 // check for both add and update
                 var check = await _context.Products
-                    .FirstOrDefaultAsync(x => x.ProductName == productName && (productId == null || x.ProductId != productId));
+                    .FirstOrDefaultAsync(x => x.ProductName == productName && (proId == null || x.ProductId != proId));
 
                 return check == null;
             }
@@ -61,8 +61,8 @@ namespace WMAPI.Repository.Implementations
         public async Task<IEnumerable<Product>> GetAllProducts()
         => await _context.Products.ToListAsync();
 
-        public async Task<Product?> GetProductById(int id)
-        => await _context.Products.FindAsync(id);
+        public async Task<Product?> GetProductById(int proId)
+        => await _context.Products.FindAsync(proId);
 
         public async Task<bool> UpdateProduct(Product product)
         {

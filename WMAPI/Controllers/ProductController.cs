@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 using WMAPI.DTO;
+using WMAPI.Service.Implementations;
 using WMAPI.Service.Interfaces;
 
 namespace WMAPI.Controllers
@@ -28,11 +29,23 @@ namespace WMAPI.Controllers
             return Ok(new { Message = message, Data = products });
         }
 
+        [HttpGet("getProductById/{proId}")]
+        public async Task<IActionResult> GetWIById(int proId)
+        {
+
+            var (proById, message) = await _productService.GetProductById(proId);
+            if (proById == null)
+            {
+                return Ok(new { Message = message, Data = proById });
+            }
+            return Ok(new { Message = message, Data = proById });
+        }
+
+
         [HttpPost("AddProduct")]
         public async Task<IActionResult> AddProduct(ProductDTO product)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+
             if (product == null)
             {
                 return BadRequest("product is null!!");
@@ -63,10 +76,10 @@ namespace WMAPI.Controllers
             return Ok(new { Message = message });
         }
 
-        [HttpDelete("deleteProduct/{productId}")]
-        public async Task<IActionResult> DeleteProduct(int productId)
+        [HttpDelete("deleteProduct/{proId}")]
+        public async Task<IActionResult> DeleteProduct(int proId)
         {
-            var (isSuccess, message) = await _productService.DeleteProduct(productId);
+            var (isSuccess, message) = await _productService.DeleteProduct(proId);
             if (!isSuccess)
             {
                 return Ok(new { Message = message });
