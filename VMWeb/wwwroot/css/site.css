@@ -1,18 +1,89 @@
-html {
-  font-size: 14px;
+﻿html {
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    height: 100vh;
+
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+}
+
+.row > * {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+/* Sidebar */
+#sidebar {
+   min-height: 100vh;
+    height: auto;
+    padding-top: 20px;
+    background-color: #222222 !important;
+}
+
+    #sidebar h2 {
+        color: white;
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+    #sidebar ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+        #sidebar ul li {
+            width: 100%;
+            padding: 12px 0;
+        }
+
+            #sidebar ul li a {
+                display: block;
+                padding: 10px 20px;
+                text-decoration: none;
+                color: white;
+                font-size: 1.1rem;
+                transition: background-color 0.3s ease, padding-left 0.3s ease;
+            }
+
+                /* Hover effect */
+                #sidebar ul li a:hover {
+                    background-color: #e9e9e9; /* Màu nền khi hover */
+                    color: dimgrey !important;
+                    padding-left: 30px; /* Thêm khoảng cách trái khi hover */
+                }
+
+                /* Active item */
+                #sidebar ul li a.active {
+                    background-color: #0056b3; /* Màu nền cho mục được chọn */
+                    font-weight: bold; /* Làm đậm chữ của mục đang được chọn */
+                    padding-left: 30px; /* Giữ khoảng cách trái khi mục được chọn */
+                }
+
+/* Sidebar responsive: trên màn hình nhỏ, sidebar sẽ chiếm toàn bộ chiều rộng */
+@media (max-width: 768px) {
+    #sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+    }
+
+        #sidebar ul li a {
+            padding: 10px;
+            font-size: 1rem;
+        }
+
+        #sidebar h2 {
+            font-size: 1.3rem;
+        }
 }

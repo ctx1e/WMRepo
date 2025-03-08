@@ -19,15 +19,14 @@ namespace WMAPI.Service.Implementations
             _inventoryInRepository = inventoryRepository;
         }
 
-        public async Task<(bool IsSuccess, string Msg)> AddWO(GetWarehouseOutRequest warehouseOutRequest)
+        public async Task<bool> AddWO(GetWarehouseOutRequest warehouseOutRequest)
         {
             foreach(var item in warehouseOutRequest.WarehouseOutDetailDTOs)
             {
                 var checkQuanProductInInven = await _inventoryInRepository.GetProductInInventoryByProductId(item.ProductId);
                 if((checkQuanProductInInven.QuantityInStock - item.QuantityOut) < 0)
                 {
-                    return (false, "The number of products shipped is greater than the number of products in stock." +
-                                    " The number of products in stock is: " + checkQuanProductInInven.QuantityInStock);
+                    return false;
                 }
             }
             List<WarehouseOutDetail> getListWOD = new();
@@ -44,7 +43,7 @@ namespace WMAPI.Service.Implementations
                 OutDate = dateNow
             };
             if (!(await _warehouseOutRepository.AddWO(getWO)))
-                return (false, "Add Warehouse Out failed!");
+                return false;
 
             // Get List Inventory to update product and list Warehouse in detail to add
             foreach (var item in warehouseOutRequest.WarehouseOutDetailDTOs)
@@ -69,33 +68,33 @@ namespace WMAPI.Service.Implementations
             }
 
             if (!(await _wodRepository.AddMultiWODByInId(getListWOD)))
-                return (false, "Add WOD by warehouse in failed!");
+                return false;
 
             if (!(await _inventoryInRepository.UpdateMultiInventory(getListInventoryByProductId)))
-                return (false, "Update Inventories By Product Id failed!");
+                return false;
 
-            return (true, "Add Warehouse Out successfully");
+            return true;
         }
 
-        public async Task<(IEnumerable<WarehouseOut> GetWOs, string Msg)> GetAllWOs()
+        public async Task<IEnumerable<WarehouseOut>> GetAllWOs()
         {
             var getWOs = await _warehouseOutRepository.GetAllWO();
 
             if (!getWOs.Any())
             {
-                return (Enumerable.Empty<WarehouseOut>(), "WarehouseIns is empty");
+                return Enumerable.Empty<WarehouseOut>();
             }
-            return (getWOs, "get WarehouseIns successfully");
+            return getWOs;
         }
 
-        public async Task<(WarehouseOut? GetWOs, string Msg)> GetWOById(int outId)
+        public async Task<WarehouseOut?> GetWOById(int outId)
         {
             var getWOById = await _warehouseOutRepository.GetWOById(outId);
             if (getWOById == null)
             {
-                return (null, "Not found WI By Id!");
+                return null;
             }
-            return (getWOById, "Get WI By Id Successfully");
+            return getWOById;
         }
 
         public async Task<string> GenerateShortUniqueCode()

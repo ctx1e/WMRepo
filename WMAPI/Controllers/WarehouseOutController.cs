@@ -21,12 +21,12 @@ namespace WMAPI.Controllers
         [HttpGet("getWarehouseOuts")]
         public async Task<IActionResult> GetWOs()
         {
-            var (wos, message) = await _warehouseOutService.GetAllWOs();
+            var wos = await _warehouseOutService.GetAllWOs();
             if (wos == null && !(wos.Any()))
             {
-                return Ok(new { Message = message, Data = wos });
+                return Ok(wos);
             }
-            return Ok(new { Message = message, Data = wos });
+            return Ok(wos);
         }
 
 
@@ -34,12 +34,12 @@ namespace WMAPI.Controllers
         public async Task<IActionResult> GetWOById(int outId)
         {
 
-            var (woById, message) = await _warehouseOutService.GetWOById(outId);
+            var woById = await _warehouseOutService.GetWOById(outId);
             if (woById == null)
             {
-                return Ok(new { Message = message, Data = woById });
+                return Ok(woById);
             }
-            return Ok(new { Message = message, Data = woById });
+            return Ok(woById);
         }
 
 
@@ -51,12 +51,12 @@ namespace WMAPI.Controllers
                 return BadRequest("WarehouseOutDetailDTOs is null!!");
             }
 
-            var (isSuccess, message) = await _warehouseOutService.AddWO(warehouseOutRequest);
+            var isSuccess= await _warehouseOutService.AddWO(warehouseOutRequest);
             if (!isSuccess)
             {
-                return Ok(new { Message = message });
+                return Ok(isSuccess);
             }
-            return Ok(new { Message = message });
+            return Ok(isSuccess);
         }
     }
 }

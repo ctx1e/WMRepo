@@ -1,0 +1,74 @@
+﻿@model List<VMWeb.Models.ViewModel.ProductViewModel>
+
+@{
+    ViewData["Title"] = "Products";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/product.css" asp-append-version="true" />
+}
+
+<div class="container mt-4">
+
+    <div> 
+        <a asp-controller="Product" asp-action="ProductAdd"><button type="submit" class="btn btn-outline-warning">Add Product</button></a>
+    </div>
+    <h2 class="text-center mb-4">Product In Stock</h2>
+
+    <div class="table-responsive">
+        <table class="table product-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Image</th>
+                    <th>Product Name</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    int count = (ViewBag.Page - 1) * 8 + 1; // Tính số thứ tự theo trang
+
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>
+                                <div class="product-img-container">
+                                    <img src="@item.Image" alt="@item.ProductName" class="product-img">
+                                </div>
+                            </td>
+                            <td><a asp-controller="Product" asp-action="ProductDetail" asp-route-proId="@item.ProductId">@item.ProductName</a></td>
+                            <td>@item.Category</td>
+                            <td class="description">
+                                    @item.Description
+                            </td>
+                        </tr>
+                        count++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No products available.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Phân trang -->
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("ProductView", new { page = i })">@i</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</div>

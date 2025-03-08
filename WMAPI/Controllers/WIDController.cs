@@ -18,11 +18,11 @@ namespace WMAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllWIDByInId(int inId)
         {
-            var (getWIDsById, message) = await _widService.GetAllWIDs(inId);
+            var getWIDsById = await _widService.GetAllWIDs(inId);
             if (!(getWIDsById.Any()))
-                return Ok(new { Message = message , Data = getWIDsById});
+                return Ok(getWIDsById);
 
-            return Ok(new { Message = message , Data = getWIDsById});
+            return Ok(getWIDsById);
         }
     }
 }

@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "WMAPI\\WMAPI.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "VMWeb\\VMWeb.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

@@ -4,7 +4,7 @@ namespace WMAPI.Service.Interfaces
 {
     public interface IWODService
     {
-        Task<(IEnumerable<WarehouseOutDetail>, string Msg)> GetAllWODs(int outId);
+        Task<IEnumerable<WarehouseOutDetail>> GetAllWODs(int outId);
 
     }
 }

@@ -19,7 +19,7 @@ namespace WMAPI.Service.Implementations
             _inventoryInRepository = inventoryRepository;
             _widRepository = widRepository;
         }
-        public async Task<(bool IsSuccess, string Msg)> AddWI(GetWarehouseInRequest warehouseInRequest)
+        public async Task<bool> AddWI(GetWarehouseInRequest warehouseInRequest)
         {
             List<WarehouseInDetail> getListWID = new();
             List<Inventory> getListInventoryByProductId = new();
@@ -34,7 +34,7 @@ namespace WMAPI.Service.Implementations
                 InDate = dateNow
             };
             if (!(await _warehouseInRepository.AddWI(getWI)))
-                return (false, "Add Warehouse In failed!");
+                return false;
 
             // Get List Inventory to update product and list Warehouse in detail to add
             foreach (var item in warehouseInRequest.WarehouseInDetailDTOs)
@@ -59,33 +59,33 @@ namespace WMAPI.Service.Implementations
             }
 
             if (!(await _widRepository.AddMultiWIDByInId(getListWID)))
-                return (false, "Add WID by warehouse in failed!");
+                return false;
 
             if (!(await _inventoryInRepository.UpdateMultiInventory(getListInventoryByProductId)))
-                return (false, "Update Inventories By Product Id failed!");
+                return false;
 
-            return (true, "Add Warehouse In successfully");
+            return true;
         }
 
-        public async Task<(IEnumerable<WarehouseIn> GetWIs, string Msg)> GetAllWIs()
+        public async Task<IEnumerable<WarehouseIn>> GetAllWIs()
         {
             var getWIs = await _warehouseInRepository.GetAllWI();
 
             if (!getWIs.Any())
             {
-                return (Enumerable.Empty<WarehouseIn>(), "WarehouseIns is empty");
+                return Enumerable.Empty<WarehouseIn>();
             }
-            return (getWIs, "get WarehouseIns successfully");
+            return getWIs;
         }
 
-        public async Task<(WarehouseIn? GetWIs, string Msg)> GetWIById(int inId)
+        public async Task<WarehouseIn?> GetWIById(int inId)
         {
             var getWIById = await _warehouseInRepository.GetWIById(inId);
             if (getWIById == null)
             {
-                return (null, "Not found WI By Id!");
+                return null;
             }
-            return (getWIById, "Get WI By Id Successfully");
+            return getWIById;
         }
 
         public async Task<string> GenerateShortUniqueCode()

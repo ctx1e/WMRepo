@@ -15,15 +15,12 @@ namespace WMAPI.Controllers
             _inventoryService = inventoryService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetProducts()
+        [HttpGet("inventories")]
+        public async Task<IActionResult> GetInventories()
         {
-            var (inventories, message) = await _inventoryService.GetAllInventories();
-            if (inventories == null && !(inventories.Any()))
-            {
-                return Ok(new { Message = message, Data = inventories });
-            }
-            return Ok(new { Message = message, Data = inventories });
+            var inventories = await _inventoryService.GetAllInventories();
+
+            return Ok(inventories);
         }
     }
 }

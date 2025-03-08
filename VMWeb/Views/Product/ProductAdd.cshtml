@@ -1,0 +1,55 @@
+﻿@model VMWeb.Models.Product
+
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/productAdd.css" asp-append-version="true" />
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Add Product</h2>
+
+    <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+        <!-- Product Name -->
+        <div class="form-group">
+            <label for="ProductName">Product Name</label>
+            <input asp-for="ProductName" class="form-control" id="ProductName" required />
+            <span asp-validation-for="ProductName" class="text-danger"></span>
+        </div>
+
+        <!-- Category -->
+        <div class="form-group">
+            <label for="Category">Category</label>
+            <select asp-for="Category" class="form-control" required>
+                <option value="iPhone">iPhone</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Airpod">Airpod</option>
+                <option value="iPad">iPad</option>
+                <option value="Apple Watch">Apple Watch</option>
+            </select>
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+            <label for="Description">Description</label>
+            <textarea asp-for="Description" class="form-control" id="Description" rows="3" required></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <!-- Upload Image -->
+        <div class="form-group">
+            <label for="Image">Upload Image</label>
+            <input asp-for="Image" type="file" class="form-control-file" accept="image/*" required />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+
+        <!-- Submit Button -->
+        <div class="form-group text-center">
+            <button type="submit" class="btn btn-outline-primary">Add Product</button>
+        </div>
+    </form>
+</div>

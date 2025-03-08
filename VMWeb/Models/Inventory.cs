@@ -1,11 +1,10 @@
-﻿namespace WMAPI.DTO
+﻿namespace VMWeb.Models
 {
-    public class InventoryDTO
+    public class Inventory
     {
         public int InventoryId { get; set; }
         public string ProductName { get; set; }
         public int QuantityInStock { get; set; }
         public DateTime LastUpdated { get; set; }
-
     }
 }

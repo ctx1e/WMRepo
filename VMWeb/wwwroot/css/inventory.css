@@ -1,0 +1,40 @@
+﻿/* inventory.css */
+
+.container {
+    max-width: 1200px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #696969
+}
+
+.table {
+    margin-top: 20px;
+    text-align: center;
+}
+
+    .table th {
+        background-color: #727272; /* Màu xanh Bootstrap */
+        color: white; /* Chữ màu trắng */
+        border: 1px solid #c6c6c6;
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+.inventory-table thead th {
+    text-align: center;
+}
+.page-item.active .page-link {
+    background-color: #7e7e7e; /* Màu xám cho active */
+    color: #fff;
+    border-color: #b0b0b0;
+}

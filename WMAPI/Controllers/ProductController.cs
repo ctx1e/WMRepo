@@ -21,24 +21,21 @@ namespace WMAPI.Controllers
         [HttpGet("getListProducts")]
         public async Task<IActionResult> GetProducts()
         {
-            var (products, message) = await _productService.GetAllProducts();
-            if (products == null && !(products.Any()))
-            {
-                return Ok(new { Message = message, Data = products });
-            }
-            return Ok(new { Message = message, Data = products });
+            var products = await _productService.GetAllProducts();
+
+            return Ok(products);
         }
 
         [HttpGet("getProductById/{proId}")]
         public async Task<IActionResult> GetWIById(int proId)
         {
 
-            var (proById, message) = await _productService.GetProductById(proId);
+            var proById= await _productService.GetProductById(proId);
             if (proById == null)
             {
-                return Ok(new { Message = message, Data = proById });
+                return Ok(proById);
             }
-            return Ok(new { Message = message, Data = proById });
+            return Ok(proById);
         }
 
 
@@ -50,12 +47,12 @@ namespace WMAPI.Controllers
             {
                 return BadRequest("product is null!!");
             }
-            var (isSuccess, message) = await _productService.AddProduct(product);
+            var isSuccess = await _productService.AddProduct(product);
             if (!isSuccess)
             {
-                return Ok(new { Message = message });
+                return Ok(isSuccess);
             }
-            return Ok(new { Message = message });
+            return Ok(isSuccess);
         }
 
         [HttpPut("UpdateProduct")]
@@ -68,23 +65,23 @@ namespace WMAPI.Controllers
                 return BadRequest("product is null!!");
             }
 
-            var (isSuccess, message) = await _productService.UpdateProduct(product);
+            var isSuccess = await _productService.UpdateProduct(product);
             if (!isSuccess)
             {
-                return Ok(new { Message = message });
+                return Ok(isSuccess);
             }
-            return Ok(new { Message = message });
+            return Ok(isSuccess);
         }
 
         [HttpDelete("deleteProduct/{proId}")]
         public async Task<IActionResult> DeleteProduct(int proId)
         {
-            var (isSuccess, message) = await _productService.DeleteProduct(proId);
+            var isSuccess = await _productService.DeleteProduct(proId);
             if (!isSuccess)
             {
-                return Ok(new { Message = message });
+                return Ok(isSuccess);
             }
-            return Ok(new { Message = message });
+            return Ok(isSuccess);
         }
     }
 }

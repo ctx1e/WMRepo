@@ -1,10 +1,11 @@
-﻿using WMAPI.Models;
+﻿using WMAPI.DTO;
+using WMAPI.Models;
 
 namespace WMAPI.Repository.Interfaces
 {
     public interface IInventoryRepository
     {
-        Task<IEnumerable<Inventory>> GetAllInventories();
+        Task<IEnumerable<InventoryDTO>> GetAllInventories();
         Task<Inventory?> GetProductInInventoryByProductId(int proId);
         Task<bool> AddProductIntoInventory(Inventory inventory);
         Task<bool> UpdateInventory(Inventory inventory);

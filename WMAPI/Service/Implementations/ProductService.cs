@@ -25,13 +25,13 @@ namespace WMAPI.Service.Implementations
             _cloudinary = cloudinary;
         }
 
-        public async Task<(bool IsSuccess, string Msg)> AddProduct(ProductDTO product)
+        public async Task<bool> AddProduct(ProductDTO product)
         {
             if (!(await _productRepository.CheckNameProduct(product.ProductName, null)))
-                return (false, "Product Name is already existed!");
+                return false;
 
-            var (msg, getUrlImg) = await UploadImageAsync(product.Image);
-            if (getUrlImg == null) return (false, msg);
+            var getUrlImg = await UploadImageAsync(product.Image);
+            if (getUrlImg == null) return false;
 
             var newProduct = new Product
             {
@@ -42,7 +42,7 @@ namespace WMAPI.Service.Implementations
             };
 
              if (!(await _productRepository.AddProduct(newProduct)))
-                return (false, "Add product failed!");
+                return false;
 
             var newInventory = new Inventory
             {
@@ -53,15 +53,15 @@ namespace WMAPI.Service.Implementations
             };
 
             if (!(await _inventoryRepository.AddProductIntoInventory(newInventory)))
-                return (false, "Add Product Into Inventory failed");
+                return false;
 
-            return (true, "Add product successfully");
+            return true;
         }
 
-        public async Task<(bool IsSuccess, string Msg)> DeleteProduct(int proId)
+        public async Task<bool> DeleteProduct(int proId)
         {
-            var (getProductById, msg) = await GetProductById(proId);
-            if (getProductById == null) return (false, msg);
+            var getProductById = await GetProductById(proId);
+            if (getProductById == null) return false;
 
             var getAllWIByProId = await _widRepository.GetAllWIByProductId(proId);
             var getAllWOByProId = await _wodRepository.GetAllWOByProductId(proId);
@@ -75,48 +75,48 @@ namespace WMAPI.Service.Implementations
             }
 
             if (!(await _widRepository.DeleteMultiWIDByInId(getAllWIByProId)))
-                return (false, "Delete WIDs By Product Id failed!");
+                return false;
 
             if (!(await _wodRepository.DeleteMultiWODByInId(getAllWOByProId)))
-                return (false, "Delete WIDs By Product Id failed!");
+                return false;
 
             if (!(await _productRepository.DeleteProduct(getProductById)))
-                return (false, "Delete Product failed!");
-            return (true, "Delete Product successfully"); 
+                return false;
+            return true; 
         }
 
-        public async Task<(IEnumerable<Product> products, string Msg)> GetAllProducts()
+        public async Task<IEnumerable<Product>> GetAllProducts()
         {
             var getProducts = await _productRepository.GetAllProducts();
 
             if (!getProducts.Any())
             {
-                return (Enumerable.Empty<Product>(), "Products is empty");
+                return Enumerable.Empty<Product>();
             }
-            return (getProducts, "get Products successfully");
+            return getProducts;
         }
 
-        public async Task<(Product? product, string Msg)> GetProductById(int proId)
+        public async Task<Product?> GetProductById(int proId)
         {
             var getProductById = await _productRepository.GetProductById(proId);
             if (getProductById == null)
             {
-                return (null, "Not found product!");
+                return null;
             }
-            return (getProductById, "Get Product By Id Successfully");
+            return getProductById;
         }
 
-        public async Task<(bool IsSuccess, string Msg)> UpdateProduct(ProductDTO product)
+        public async Task<bool> UpdateProduct(ProductDTO product)
         {
-            var (getProductById, msgGetProductById) = await GetProductById(product.ProductId);
-            if (getProductById == null) return (false, msgGetProductById);
+            var getProductById = await GetProductById(product.ProductId);
+            if (getProductById == null) return false;
 
             if (!(await _productRepository.CheckNameProduct(product.ProductName, product.ProductId)))
-                return (false, "Product Name is already existed!");
+                return false;
 
             // Check Img and get Url
-            var (msgGetUrlImg, getUrlImg) = await UploadImageAsync(product.Image);
-            if (getUrlImg == null) return (false, msgGetUrlImg);
+            var getUrlImg = await UploadImageAsync(product.Image);
+            if (getUrlImg == null) return false;
 
 
             getProductById.ProductName = product.ProductName;
@@ -124,26 +124,26 @@ namespace WMAPI.Service.Implementations
             getProductById.Description = product.Description;
             getProductById.Image = getUrlImg;
             if (!(await _productRepository.UpdateProduct(getProductById)))
-                return (false, "Update product failed!");
+                return false;
 
-            return (true, "Update product successfully");
+            return true;
         }
 
 
 
         // Handle Image
-        public async Task<(string Message, string? Url)> UploadImageAsync(IFormFile image)
+        public async Task<string?> UploadImageAsync(IFormFile image)
         {
             long maxFileSize = 5 * 1024 * 1024;
 
             if (image == null || image.Length == 0)
             {
-                return ("No images selected ", null);
+                return null;
             }   
 
             if (image.Length > maxFileSize)
             {
-                return ($"The image is too large. The maximum size is {maxFileSize / (1024 * 1024)} MB.", null);
+                return null;
             }
 
             try
@@ -159,12 +159,12 @@ namespace WMAPI.Service.Implementations
                     };
 
                     var uploadResult = await _cloudinary.UploadAsync(uploadParams); // Use UploadAsync for file < 100MB
-                    return ("", uploadResult.SecureUrl.ToString());
+                    return uploadResult.SecureUrl.ToString();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return ($"Error when download image: {ex.Message}", null);
+                return null;
             }
         }
     }

@@ -12,15 +12,15 @@ namespace WMAPI.Service.Implementations
         {
             _widRepository = widRepository;
         }
-        public async Task<(IEnumerable<WarehouseInDetail>, string Msg)> GetAllWIDs(int inId)
+        public async Task<IEnumerable<WarehouseInDetail>> GetAllWIDs(int inId)
         {
             var getWIDs = await _widRepository.GetAllWIByInId(inId);
 
             if (!getWIDs.Any())
             {
-                return (Enumerable.Empty<WarehouseInDetail>(), "WID is empty");
+                return Enumerable.Empty<WarehouseInDetail>();
             }
-            return (getWIDs, "get WID successfully");
+            return getWIDs;
         }
     }
 }

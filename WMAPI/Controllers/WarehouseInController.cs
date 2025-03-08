@@ -21,12 +21,12 @@ namespace WMAPI.Controllers
         [HttpGet("getWarehouseIns")]
         public async Task<IActionResult> GetWIs()
         {
-            var (wis, message) = await _warehouseInService.GetAllWIs();
+            var wis = await _warehouseInService.GetAllWIs();
             if (wis == null && !(wis.Any()))
             {
-                return Ok(new { Message = message, Data = wis });
+                return Ok(wis);
             }
-            return Ok(new { Message = message, Data = wis });
+            return Ok(wis);
         }
 
 
@@ -34,12 +34,12 @@ namespace WMAPI.Controllers
         public async Task<IActionResult> GetWIById(int inId)
         {
 
-            var (wiById, message) = await _warehouseInService.GetWIById(inId);
+            var wiById = await _warehouseInService.GetWIById(inId);
             if (wiById == null)
             {
-                return Ok(new { Message = message, Data = wiById });
+                return Ok(wiById);
             }
-            return Ok(new { Message = message, Data = wiById });
+            return Ok(wiById);
         }
 
 
@@ -51,12 +51,12 @@ namespace WMAPI.Controllers
                 return BadRequest("WarehouseInDetailDTOs is null!!");
             }
 
-            var (isSuccess, message) = await _warehouseInService.AddWI(warehouseInRequest);
+            var isSuccess = await _warehouseInService.AddWI(warehouseInRequest);
             if (!isSuccess)
             {
-                return Ok(new { Message = message });
+                return Ok(isSuccess);
             } 
-            return Ok(new { Message = message });
+            return Ok(isSuccess);
         }
 
     }
