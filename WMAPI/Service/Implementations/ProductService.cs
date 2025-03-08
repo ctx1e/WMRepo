@@ -154,9 +154,14 @@ namespace WMAPI.Service.Implementations
                 {
                     var uploadParams = new ImageUploadParams()
                     {
+                        //File = new FileDescription(image.FileName, stream),
+                        //Folder = "/WMProject/Img_products", 
+                        //PublicId = $"product_image_{id}",
+
                         File = new FileDescription(image.FileName, stream),
-                        Folder = "/WMProject/Img_products", 
-                        PublicId = $"product_image_{id}",
+                        UploadPreset = "wmproject_img_products",
+                        UseFilename = true,     // Dùng tên file gốc làm PublicId
+                        UniqueFilename = true
                     };
 
                     var uploadResult = await _cloudinary.UploadAsync(uploadParams); // Use UploadAsync for file < 100MB
