@@ -8,11 +8,44 @@
 @section Styles {
     <link rel="stylesheet" href="~/css/productAdd.css" asp-append-version="true" />
 }
+@section Scripts {
+    <script>
+        // Kiểm tra nếu có thông báo từ Controller
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                                    showNotification('@TempData["SuccessMessage"]', 'success');
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                                showNotification('@TempData["ErrorMessage"]', 'error');
+            </text>
+        }
 
+        // Hàm để hiển thị thông báo
+        function showNotification(message, type) {
+            var notification = document.getElementById("notification");
+            notification.innerText = message;
+            notification.classList.add(type); // Thêm class success hoặc error để đổi màu
+
+            // Hiển thị notification
+            notification.style.display = 'block';
+
+            // Ẩn notification sau 2s
+            setTimeout(function () {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+    </script>
+}
+<div id="notification" class="notification"></div>
 <div class="container mt-4">
+
     <h2 class="text-center mb-4">Add Product</h2>
 
-    <form asp-action="AddProduct" method="post" enctype="multipart/form-data">
+    <form asp-controller="Product" asp-action="HandleAddProduct" method="post" enctype="multipart/form-data">
         <!-- Product Name -->
         <div class="form-group">
             <label for="ProductName">Product Name</label>
@@ -53,3 +86,4 @@
         </div>
     </form>
 </div>
+

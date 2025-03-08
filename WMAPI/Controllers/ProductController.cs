@@ -39,8 +39,8 @@ namespace WMAPI.Controllers
         }
 
 
-        [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(ProductDTO product)
+        [HttpPost]
+        public async Task<IActionResult> AddProduct([FromForm] ProductDTO product)
         {
 
             if (product == null)
@@ -55,8 +55,8 @@ namespace WMAPI.Controllers
             return Ok(isSuccess);
         }
 
-        [HttpPut("UpdateProduct")]
-        public async Task<IActionResult> UpdateProduct(ProductDTO product)
+        [HttpPut]
+        public async Task<IActionResult> UpdateProduct([FromBody] ProductDTO product)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

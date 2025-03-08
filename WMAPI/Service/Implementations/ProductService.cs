@@ -116,13 +116,15 @@ namespace WMAPI.Service.Implementations
 
             // Check Img and get Url
             var getUrlImg = await UploadImageAsync(product.Image);
-            if (getUrlImg == null) return false;
 
 
             getProductById.ProductName = product.ProductName;
             getProductById.Category = product.Category;
             getProductById.Description = product.Description;
+            if (getUrlImg != null)
+            {
             getProductById.Image = getUrlImg;
+            }
             if (!(await _productRepository.UpdateProduct(getProductById)))
                 return false;
 
@@ -145,7 +147,7 @@ namespace WMAPI.Service.Implementations
             {
                 return null;
             }
-
+            var id = await GenerateShortUniqueCode();
             try
             {
                 using (var stream = image.OpenReadStream())
@@ -153,19 +155,28 @@ namespace WMAPI.Service.Implementations
                     var uploadParams = new ImageUploadParams()
                     {
                         File = new FileDescription(image.FileName, stream),
-                        Folder = "WMProject/Img_products", 
-                        PublicId = $"product_image",
-                        UniqueFilename = true
+                        Folder = "/WMProject/Img_products", 
+                        PublicId = $"product_image_{id}",
                     };
 
                     var uploadResult = await _cloudinary.UploadAsync(uploadParams); // Use UploadAsync for file < 100MB
                     return uploadResult.SecureUrl.ToString();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Console.WriteLine($"Error: {ex.Message}");
                 return null;
             }
+        }
+
+        public async Task<string> GenerateShortUniqueCode()
+        {
+            Guid guid = Guid.NewGuid();
+            byte[] bytes = guid.ToByteArray();
+            byte[] shortBytes = new byte[6];
+            Array.Copy(bytes, 0, shortBytes, 0, 6); // Get 6 byte (48-bit)
+            return Convert.ToBase64String(shortBytes).Substring(0, 8); // 8 characters
         }
     }
 }

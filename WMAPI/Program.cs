@@ -1,5 +1,6 @@
 using CloudinaryDotNet;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json;
 using WMAPI.DTO.Settings;
 using WMAPI.Models;
 using WMAPI.Repository.Implementations;
@@ -12,19 +13,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 // Add service CORS
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowFrontEndWM",
-        policy =>
-        {
-            policy.WithOrigins("https://localhost:7037", "http://localhost:5030")
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowFrontEndWM",
+//        policy =>
+//        {
+//            policy.WithOrigins("https://localhost:7037", "http://localhost:5030")
+//                  .AllowAnyMethod()
+//                  .AllowAnyHeader();
+//        });
 
-});
+//});
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        // C?u hình ki?u ??t tên các thu?c tính JSON là CamelCase
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
 // Regis DB
 builder.Services.AddDbContext<WarehouseManagementContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DBConnection")));

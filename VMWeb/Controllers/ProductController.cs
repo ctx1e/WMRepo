@@ -57,12 +57,12 @@ namespace VMWeb.Controllers
             return View();
         }
 
-        public async Task<IActionResult> HandleProduct(Product product)
+        public async Task<IActionResult> HandleAddProduct(Product product)
         {
 
             // Kiểm tra kích thước file (ở đây là giới hạn 10MB)
             const long MaxFileSize = 10 * 1024 * 1024; // 10MB
-
+            var checkIMG = product.Image.Length;
             if (product.Image.Length > MaxFileSize)
             {
                 ModelState.AddModelError("Image", "File size must be less than 10MB.");
@@ -70,8 +70,16 @@ namespace VMWeb.Controllers
             }
             else
             {
-                var data = await _productService.GetProductByIdAsync(product.ProductId);
-                return RedirectToAction("a");
+                var check = await _productService.AddProductAsync(product);
+                if (!check)
+                {
+                    TempData["ErrorMessage"] = "Failed to add product!";
+                    return RedirectToAction("ProductAdd");
+                }
+
+                TempData["SuccessMessage"] = "Product added successfully!";
+                return RedirectToAction("ProductView");
+
             }
 
 
