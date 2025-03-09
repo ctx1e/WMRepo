@@ -51,8 +51,9 @@ namespace WMAPI.Repository.Implementations
                     QuantityInStock = i.QuantityInStock,
                     LastUpdated = i.LastUpdated
                 })
+                .OrderByDescending(x => x.LastUpdated)
                 .ToListAsync();
-        
+
 
         public async Task<Inventory?> GetProductInInventoryByProductId(int proId)
         => await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == proId);
@@ -61,7 +62,7 @@ namespace WMAPI.Repository.Implementations
         {
             try
             {
-                 _context.Update(inventory);
+                _context.Update(inventory);
                 await _context.SaveChangesAsync();
                 return true;
             }
@@ -75,7 +76,7 @@ namespace WMAPI.Repository.Implementations
         {
             try
             {
-                
+
                 _context.UpdateRange(inventories);
                 await _context.SaveChangesAsync();
                 return true;

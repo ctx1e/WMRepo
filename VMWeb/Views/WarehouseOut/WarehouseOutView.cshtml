@@ -1,25 +1,25 @@
-﻿@model List<VMWeb.Models.WarehouseIn>
+﻿@model List<VMWeb.Models.WarehouseOut>
 
 @{
-    ViewData["Title"] = "Warehouse In List";
+    ViewData["Title"] = "Warehouse Out List";
     Layout = "_Layout";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/WarehouseIn.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/WarehouseOut.css" asp-append-version="true" />
 }
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Warehouse In List</h2>
+    <h2 class="text-center mb-4">Warehouse Out List</h2>
 
     <!-- Search Bar + Add Button -->
     <div class="row mb-3 mx-3">
         <div class="col-md-6">
-            <a asp-action="WarehouseInAdd" class="btn btn-warning">Add WarehouseIn</a>
+            <a asp-action="WarehouseOutAdd" class="btn btn-warning">Add WarehouseOut</a>
         </div>
         <div class="col-md-6 text-end d-flex">
-            <form asp-action="WarehouseInView" method="get" class="d-flex justify-content-end w-100">
-                <input type="text" name="searchTerm" class="form-control" placeholder="Search by In Code or Supplier"
+            <form asp-action="WarehouseOutView" method="get" class="d-flex justify-content-end w-100">
+                <input type="text" name="searchTerm" class="form-control" placeholder="Search by Out Code or Customer"
                        value="@ViewBag.SearchTerm" style="width: 70%;" />
                 <button type="submit" class="btn btn-primary mx-2">Search</button>
             </form>
@@ -32,10 +32,10 @@
             <thead>
                 <tr>
                     <th class="col-2 text-center">#</th>  <!-- Làm to cột ID -->
-                    <th class="col-3">In Code</th>  <!-- Làm to cột In Code -->
-                    <th class="col-1">Supplier</th>
-                    <th class="col-2 text-end">Total Price</th>
-                    <th class="col-2 text-center">Date</th>
+                    <th class="col-2">Out Code</th>  <!-- Làm to cột Out Code -->
+                    <th class="col-2">Recipant Name</th>
+                    <th class="col-2">Total Price</th>
+                    <th class="col-1 text-center">Date</th>
                     <th class="col-3 text-center">Detail</th> <!-- Thu nhỏ cột Detail -->
                 </tr>
             </thead>
@@ -47,13 +47,13 @@
                     {
                         <tr>
                             <td class="fw-bold text-center">@count</td>
-                            <td class="fw-bold">@item.InCode</td> <!-- Mã to hơn -->
-                            <td>@item.SupplierName</td>
-                            <td class="text-end">@item.TotalPriceIn.ToString("C")</td>
-                            <td class="text-center">@item.InDate.ToString("dd/MM/yyyy")</td>
+                            <td class="fw-bold">@item.OutCode</td> <!-- Mã to hơn -->
+                            <td>@item.RecipientName</td>
+                            <td class="">@item.TotalPriceOut.ToString("C")</td>
+                            <td class="text-center">@item.OutDate.ToString("dd/MM/yyyy")</td>
                             <td class="text-center">
-                                <a asp-controller="WarehouseIn" asp-action="WarehouseInDetail" asp-route-inId="@item.InId" class="btn btn-sm btn-outline-info">View</a>
-                                <a asp-controller="WarehouseIn" asp-action="WarehouseInDetail" asp-route-inId="@item.InId" class="btn btn-sm btn-outline-danger">Delete</a>
+                                <a asp-controller="WarehouseOut" asp-action="WarehouseOutDetail" asp-route-outId="@item.OutId" class="btn btn-sm btn-outline-info">View</a>
+                                <a asp-controller="WarehouseOut" asp-action="WarehouseOutDetail" asp-route-outId="@item.OutId" class="btn btn-sm btn-outline-danger">Delete</a>
                             </td>
                         </tr>
                         count++;
@@ -70,16 +70,14 @@
     </div>
 
     <!-- Pagination -->
-
     <nav aria-label="Page navigation">
         <ul class="pagination justify-content-center">
             @for (int i = 1; i <= ViewBag.TotalPages; i++)
             {
                 <li class="page-item @(i == ViewBag.Page ? "active" : "")">
-                    <a class="page-link" href="@Url.Action("WarehouseInView", new { page = i, searchTerm = ViewBag.SearchTerm })">@i</a>
+                    <a class="page-link" href="@Url.Action("WarehouseOutView", new { page = i, searchTerm = ViewBag.SearchTerm })">@i</a>
                 </li>
             }
         </ul>
     </nav>
-
 </div>

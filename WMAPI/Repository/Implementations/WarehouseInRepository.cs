@@ -39,7 +39,7 @@ namespace WMAPI.Repository.Implementations
         }
 
         public async Task<IEnumerable<WarehouseIn>> GetAllWI()
-        => await _context.WarehouseIns.ToListAsync();
+        => await _context.WarehouseIns.OrderByDescending(x => x.InDate).ToListAsync();
 
         public async Task<WarehouseIn?> GetWIById(int inId)
         => await _context.WarehouseIns.FindAsync(inId);

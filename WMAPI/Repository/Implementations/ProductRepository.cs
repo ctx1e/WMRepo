@@ -59,7 +59,7 @@ namespace WMAPI.Repository.Implementations
         }
 
         public async Task<IEnumerable<Product>> GetAllProducts()
-        => await _context.Products.ToListAsync();
+        => await _context.Products.OrderByDescending(x => x.ProductId).ToListAsync();
 
         public async Task<Product?> GetProductById(int proId)
         => await _context.Products.FindAsync(proId);

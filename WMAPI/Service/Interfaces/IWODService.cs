@@ -1,10 +1,11 @@
-﻿using WMAPI.Models;
+﻿using WMAPI.DTO;
+using WMAPI.Models;
 
 namespace WMAPI.Service.Interfaces
 {
     public interface IWODService
     {
-        Task<IEnumerable<WarehouseOutDetail>> GetAllWODs(int outId);
+        Task<IEnumerable<WODListByOutId>> GetAllWODs(int outId);
 
     }
 }

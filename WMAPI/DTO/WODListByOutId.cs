@@ -1,6 +1,6 @@
-﻿namespace VMWeb.Models
+﻿namespace WMAPI.DTO
 {
-    public class WarehouseOutDetail
+    public class WODListByOutId
     {
         public int OutDetailId { get; set; }
         public int OutId { get; set; }

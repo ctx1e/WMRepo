@@ -11,6 +11,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient<InventoryService>();
 builder.Services.AddHttpClient<ProductService>();
 builder.Services.AddHttpClient<WarehouseInService>();
+builder.Services.AddHttpClient<WarehouseOutService>();
 var app = builder.Build();
 
 

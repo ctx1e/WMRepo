@@ -1,0 +1,63 @@
+﻿/* Style for Warehouse In Detail Page */
+.detail-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Card for Warehouse Info */
+.warehouse-info {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+    /* Styling for key information */
+    .warehouse-info p {
+        margin-bottom: 8px;
+        font-size: 1.1rem;
+    }
+
+    .warehouse-info strong {
+        font-weight: bold;
+    }
+
+/* Table Styling */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .table thead {
+        background-color: #f8f9fa;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+        text-align: left;
+    }
+
+        .table th:nth-child(2), .table td:nth-child(2) {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+    .table tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+/* Back Button */
+.back-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+    .back-button .btn {
+        background-color: #6c757d;
+        color: white;
+        border-radius: 5px;
+        padding: 8px 15px;
+    }

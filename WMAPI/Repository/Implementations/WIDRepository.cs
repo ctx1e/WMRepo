@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using WMAPI.DTO;
 using WMAPI.Models;
 using WMAPI.Repository.Interfaces;
 
@@ -41,8 +42,16 @@ namespace WMAPI.Repository.Implementations
             }
         }
 
-        public async Task<IEnumerable<WarehouseInDetail>> GetAllWIByInId(int inId)
-        => await _context.WarehouseInDetails.Where(x => x.InId == inId).ToListAsync();
+        public async Task<IEnumerable<WIDListByInId>> GetAllWIByInId(int inId)
+        => await _context.WarehouseInDetails.Where(x => x.InId == inId).Select(w => new WIDListByInId
+        {
+            InDetailId = w.InDetailId,
+            InId = w.InId,
+            ProductName = w.Product.ProductName,
+            PriceIn = w.PriceIn,
+            QuantityIn = w.QuantityIn,
+            TotalPrice = w.TotalPrice,
+        }).ToListAsync();
 
         public async Task<List<WarehouseInDetail>> GetAllWIByProductId(int proId)
        => await _context.WarehouseInDetails.Where(x => x.ProductId == proId).ToListAsync();

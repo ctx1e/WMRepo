@@ -1,6 +1,6 @@
-﻿namespace VMWeb.Models
+﻿namespace WMAPI.DTO
 {
-    public class WarehouseInDetail
+    public class WIDListByInId
     {
         public int InDetailId { get; set; }
         public int InId { get; set; }

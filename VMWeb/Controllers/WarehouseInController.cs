@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using VMWeb.Models;
 using VMWeb.Models.ViewModel;
 using VMWeb.Service;
 
@@ -14,19 +15,31 @@ namespace VMWeb.Controllers
         {
             _warehouseInService = warehouseInService;
         }
-        public async Task<IActionResult> WarehouseInView(int page = 1, int pageSize = 8)
+        public async Task<IActionResult> WarehouseInView(string searchTerm, int page = 1)
         {
+            var warehouseList = await _warehouseInService.GetWarehouseInsAsync();  // API trả về List<WarehouseIn>
 
-            var warehouseIns = await _warehouseInService.GetWarehouseInsAsync();
+            // Áp dụng điều kiện tìm kiếm
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                warehouseList = warehouseList
+                    .Where(w => w.InCode.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
+                                w.SupplierName.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
 
-            // Tính toán phân trang
-            int totalItems = warehouseIns.Count;
-            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-            var pagedData = warehouseIns.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            // Áp dụng phân trang
+            int pageSize = 10;
+            int totalRecords = warehouseList.Count();
+            int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
-            ViewBag.Page = page;
+            // Lấy dữ liệu theo phân trang
+            var pagedWarehouseList = warehouseList.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
             ViewBag.TotalPages = totalPages;
-            return View(warehouseIns);
+            ViewBag.Page = page;
+
+            return View(pagedWarehouseList); // Trả về dữ liệu đã phân trang
         }
 
         public async Task<IActionResult> WarehouseInDetail(int inId)

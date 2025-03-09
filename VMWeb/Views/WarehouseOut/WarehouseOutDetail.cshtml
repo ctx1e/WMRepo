@@ -1,23 +1,23 @@
-﻿@model VMWeb.Models.ViewModel.WIDViewModel
+﻿@model VMWeb.Models.ViewModel.WODViewModel
 
 @{
-    ViewData["Title"] = "Warehouse In Detail";
+    ViewData["Title"] = "Warehouse Out Detail";
     Layout = "_Layout";
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/WID.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/WOD.css" asp-append-version="true" />
 }
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Warehouse In Detail</h2>
+    <h2 class="text-center mb-4">Warehouse Out Detail</h2>
 
     <!-- Warehouse Info -->
     <div class="card p-3 mb-4 warehouse-detail-card">
-        <p><strong>In Code:</strong> @Model.WarehouseIn.InCode</p>
-        <p><strong>Supplier:</strong> @Model.WarehouseIn.SupplierName</p>
-        <p><strong>Date:</strong> @Model.WarehouseIn.InDate.ToString("dd/MM/yyyy")</p>
-        <p><strong>Total Price:</strong> @Model.WarehouseIn.TotalPriceIn.ToString("C")</p>
+        <p><strong>Out Code:</strong> @Model.WarehouseOut.OutCode</p>
+        <p><strong>Customer:</strong> @Model.WarehouseOut.RecipientName</p>
+        <p><strong>Date:</strong> @Model.WarehouseOut.OutDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Total Price:</strong> @Model.WarehouseOut.TotalPriceOut.ToString("C")</p>
     </div>
 
     <!-- Table -->
@@ -33,17 +33,17 @@
                 </tr>
             </thead>
             <tbody>
-                @if (Model.WarehouseInDetails != null && Model.WarehouseInDetails.Any())
+                @if (Model.WarehouseOutDetails != null && Model.WarehouseOutDetails.Any())
                 {
                     int count = 1;
 
-                    @foreach (var item in Model.WarehouseInDetails)
+                    @foreach (var item in Model.WarehouseOutDetails)
                     {
                         <tr>
                             <td>@count</td>
                             <td>@item.ProductName</td>
-                            <td>@item.QuantityIn</td>
-                            <td>@item.PriceIn.ToString("C")</td>
+                            <td>@item.QuantityOut</td>
+                            <td>@item.PriceOut.ToString("C")</td>
                             <td>@item.TotalPrice.ToString("C")</td>
                         </tr>
                         count++;
@@ -60,6 +60,6 @@
     </div>
 
     <div class="text-center mt-4">
-        <a asp-controller="WarehouseIn" asp-action="WarehouseInView" class="btn btn-secondary">Back to Warehouse List</a>
+        <a asp-controller="WarehouseOut" asp-action="WarehouseOutView" class="btn btn-secondary">Back to Warehouse List</a>
     </div>
 </div>

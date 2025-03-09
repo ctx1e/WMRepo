@@ -1,4 +1,5 @@
-﻿using WMAPI.Models;
+﻿using WMAPI.DTO;
+using WMAPI.Models;
 using WMAPI.Repository.Interfaces;
 using WMAPI.Service.Interfaces;
 
@@ -12,15 +13,15 @@ namespace WMAPI.Service.Implementations
         {
             _wodRepository = wodRepository;
         }
-        public async Task<IEnumerable<WarehouseOutDetail>> GetAllWODs(int outId)
+        public async Task<IEnumerable<WODListByOutId>> GetAllWODs(int outId)
         {
-            var getWIDs = await _wodRepository.GetAllWOByInId(outId);
+            var getWODs = await _wodRepository.GetAllWOByOutId(outId);
 
-            if (!getWIDs.Any())
+            if (!getWODs.Any())
             {
-                return Enumerable.Empty<WarehouseOutDetail>();
+                return Enumerable.Empty<WODListByOutId>();
             }
-            return getWIDs;
+            return getWODs;
         }
     }
 }

@@ -15,8 +15,8 @@ namespace WMAPI.Controllers
             _wodService = wodService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllWIDByInId(int outId)
+        [HttpGet("getAllByOutId/{outId}")]
+        public async Task<IActionResult> GetAllWODByOutId(int outId)
         {
             var getWODsById = await _wodService.GetAllWODs(outId);
             if (!(getWODsById.Any()))

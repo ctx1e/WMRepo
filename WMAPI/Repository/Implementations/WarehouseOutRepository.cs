@@ -42,7 +42,7 @@ namespace WMAPI.Repository.Implementations
         }
 
         public async Task<IEnumerable<WarehouseOut>> GetAllWO()
-        => await _context.WarehouseOuts.ToListAsync();
+        => await _context.WarehouseOuts.OrderByDescending(x => x.OutDate).ToListAsync();
 
         public async Task<WarehouseOut?> GetWOById(int outId)
         => await _context.WarehouseOuts.FindAsync(outId);
