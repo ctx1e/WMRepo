@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Views\WarehouseOut\" />
-    <Folder Include="Views\WarehouseIn\" />
   </ItemGroup>
 
   <ItemGroup>

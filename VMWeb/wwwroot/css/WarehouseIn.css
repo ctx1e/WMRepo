@@ -1,0 +1,53 @@
+﻿/* Table Styling */
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+    .table thead {
+        background-color: #f8f9fa;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+        text-align: left;
+    }
+
+/* ID & In Code Larger */
+th:nth-child(2), td:nth-child(2) {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Total Price Align Right */
+td:nth-child(4) {
+    text-align: right;
+}
+
+/* Hover effect */
+.table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Warehouse Detail Card */
+.warehouse-detail-card {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Pagination */
+.pagination .page-item.active .page-link {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.pagination .page-link {
+    color: #6c757d;
+}
+
+/* Search Bar Input */
+.search-input {
+    width: 250px;
+}

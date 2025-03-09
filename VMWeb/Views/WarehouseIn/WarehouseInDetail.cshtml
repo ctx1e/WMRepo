@@ -1,0 +1,65 @@
+﻿@model VMWeb.Models.ViewModel.WIDViewModel
+
+@{
+    ViewData["Title"] = "Warehouse In Detail";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/WID.css" asp-append-version="true" />
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Warehouse In Detail</h2>
+
+    <!-- Warehouse Info -->
+    <div class="card p-3 mb-4 warehouse-detail-card">
+        <p><strong>In Code:</strong> @Model.WarehouseIn.InCode</p>
+        <p><strong>Supplier:</strong> @Model.WarehouseIn.SupplierName</p>
+        <p><strong>Date:</strong> @Model.WarehouseIn.InDate.ToString("dd/MM/yyyy")</p>
+        <p><strong>Total Price:</strong> @Model.WarehouseIn.TotalPriceIn.ToString("C")</p>
+    </div>
+
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table warehouse-detail-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Total Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.WarehouseInDetails != null && Model.WarehouseInDetails.Any())
+                {
+                    int count = 1;
+
+                    @foreach (var item in Model.WarehouseInDetails)
+                    {
+                        <tr>
+                            <td>@count</td>
+                            <td>@item.ProductId</td>
+                            <td>@item.QuantityIn</td>
+                            <td>@item.PriceIn.ToString("C")</td>
+                            <td>@item.TotalPrice.ToString("C")</td>
+                        </tr>
+                        count++;
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">No products found.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-controller="WarehouseIn" asp-action="WarehouseInView" class="btn btn-secondary">Back to Warehouse List</a>
+    </div>
+</div>

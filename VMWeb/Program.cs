@@ -10,6 +10,7 @@ builder.Services.AddControllersWithViews();
 // Regis Service
 builder.Services.AddHttpClient<InventoryService>();
 builder.Services.AddHttpClient<ProductService>();
+builder.Services.AddHttpClient<WarehouseInService>();
 var app = builder.Build();
 
 

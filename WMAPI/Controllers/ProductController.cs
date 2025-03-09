@@ -39,7 +39,7 @@ namespace WMAPI.Controllers
         }
 
 
-        [HttpPost]
+        [HttpPost("AddProduct")]
         public async Task<IActionResult> AddProduct([FromForm] ProductDTO product)
         {
 
@@ -50,13 +50,13 @@ namespace WMAPI.Controllers
             var isSuccess = await _productService.AddProduct(product);
             if (!isSuccess)
             {
-                return Ok(isSuccess);
+                return BadRequest(isSuccess);
             }
             return Ok(isSuccess);
         }
 
-        [HttpPut]
-        public async Task<IActionResult> UpdateProduct([FromBody] ProductDTO product)
+        [HttpPut("UpdateProduct")]
+        public async Task<IActionResult> UpdateProduct([FromForm] ProductDTO product)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -68,7 +68,7 @@ namespace WMAPI.Controllers
             var isSuccess = await _productService.UpdateProduct(product);
             if (!isSuccess)
             {
-                return Ok(isSuccess);
+                return BadRequest(isSuccess);
             }
             return Ok(isSuccess);
         }

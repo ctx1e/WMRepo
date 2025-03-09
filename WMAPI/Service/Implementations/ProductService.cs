@@ -108,23 +108,24 @@ namespace WMAPI.Service.Implementations
 
         public async Task<bool> UpdateProduct(ProductDTO product)
         {
-            var getProductById = await GetProductById(product.ProductId);
+            var getProductById = await GetProductById(product.ProductId.Value);
             if (getProductById == null) return false;
 
-            if (!(await _productRepository.CheckNameProduct(product.ProductName, product.ProductId)))
+            if (!(await _productRepository.CheckNameProduct(product.ProductName, product.ProductId.Value)))
                 return false;
 
             // Check Img and get Url
+            if(product.Image != null)
+            {
             var getUrlImg = await UploadImageAsync(product.Image);
+            getProductById.Image = getUrlImg;
+
+            }
 
 
             getProductById.ProductName = product.ProductName;
             getProductById.Category = product.Category;
             getProductById.Description = product.Description;
-            if (getUrlImg != null)
-            {
-            getProductById.Image = getUrlImg;
-            }
             if (!(await _productRepository.UpdateProduct(getProductById)))
                 return false;
 

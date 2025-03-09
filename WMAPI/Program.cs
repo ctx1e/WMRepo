@@ -86,7 +86,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // User CORS
-app.UseCors("AllowFrontEndWM");
+//app.UseCors("AllowFrontEndWM");
 
 app.UseHttpsRedirection();
 

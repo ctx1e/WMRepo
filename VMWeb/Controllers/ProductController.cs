@@ -77,9 +77,57 @@ namespace VMWeb.Controllers
                     return RedirectToAction("ProductAdd");
                 }
 
-                TempData["SuccessMessage"] = "Product added successfully!";
+                TempData["SuccessMessage"] = "Product added successfully";
                 return RedirectToAction("ProductView");
 
+            }
+
+        }
+            public async Task<IActionResult> HandleUpdateAndDeleteProduct(ProductViewModel productVM, string actionProduct)
+        {
+            if(actionProduct == "0")
+            {
+                // Kiểm tra kích thước file (ở đây là giới hạn 10MB)
+                const long MaxFileSize = 10 * 1024 * 1024; // 10MB
+                if (productVM.IFFImage != null && productVM.IFFImage.Length > 0 && productVM.IFFImage.Length > MaxFileSize)
+                {
+                    ModelState.AddModelError("Image", "File size must be less than 10MB.");
+                    return RedirectToAction("product");
+                }
+                else
+                {
+                    var updateProduct = new Product
+                    {
+                        ProductId = productVM.ProductId,
+                        ProductName = productVM.ProductName,
+                        Category = productVM.Category,
+                        Description = productVM.Description,
+                        Image = productVM.IFFImage
+                    };
+                    var check = await _productService.UpdateProductAsync(updateProduct);
+                    if (!check)
+                    {
+                        TempData["ErrorMessage"] = "Failed to add product!";
+                        return RedirectToAction("ProductAdd");
+                    }
+
+                    TempData["SuccessMessage"] = "Updated Product successfully";
+                    return RedirectToAction("ProductView");
+
+                }
+
+            } else
+            {
+                var check = await _productService.DeleteProductAsync(productVM.ProductId);
+
+                if (!check)
+                {
+                    TempData["ErrorMessage"] = "Failed to Delete product!";
+                    return RedirectToAction("ProductDetail");
+                }
+
+                TempData["SuccessMessage"] = "Delete product successfully";
+                return RedirectToAction("ProductView");
             }
 
 

@@ -15,7 +15,7 @@ namespace WMAPI.Controllers
             _widService = wIDService;
         }
 
-        [HttpGet]
+        [HttpGet("getAllByInId/{inId}")]
         public async Task<IActionResult> GetAllWIDByInId(int inId)
         {
             var getWIDsById = await _widService.GetAllWIDs(inId);
