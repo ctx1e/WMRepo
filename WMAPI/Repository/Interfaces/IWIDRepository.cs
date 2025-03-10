@@ -8,6 +8,7 @@ namespace WMAPI.Repository.Interfaces
 
         Task<List<WIDListByInId>> GetAllWIDByInId(int inId);
         Task<List<WarehouseInDetail>> GetAllWIByProductId(int proId);
+        Task<WarehouseInDetail> GetWIDByProductId(int proId);
         Task<bool> AddMultiWIDByInId(List<WarehouseInDetail> wids);
         Task<bool> DeleteMultiWIDByInId(List<WarehouseInDetail> wids);
         Task<bool> RemoveMultiWIDByWI(List<WIDListByInId> wids);

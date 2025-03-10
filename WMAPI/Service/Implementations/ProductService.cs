@@ -63,22 +63,22 @@ namespace WMAPI.Service.Implementations
             var getProductById = await GetProductById(proId);
             if (getProductById == null) return false;
 
-            var getAllWIByProId = await _widRepository.GetAllWIByProductId(proId);
-            var getAllWOByProId = await _wodRepository.GetAllWOByProductId(proId);
-            foreach (var item in getAllWIByProId)
-            {
-                item.ProductId = 0;
-            }
-            foreach (var item in getAllWOByProId)
-            {
-                item.ProductId = 0;
-            }
+            //var getAllWIByProId = await _widRepository.GetAllWIByProductId(proId);
+            //var getAllWOByProId = await _wodRepository.GetAllWOByProductId(proId);
+            //foreach (var item in getAllWIByProId)
+            //{
+            //    item.ProductId = 0;
+            //}
+            //foreach (var item in getAllWOByProId)
+            //{
+            //    item.ProductId = 0;
+            //}
 
-            if (!(await _widRepository.DeleteMultiWIDByInId(getAllWIByProId)))
-                return false;
+            //if (!(await _widRepository.DeleteMultiWIDByInId(getAllWIByProId)))
+            //    return false;
 
-            if (!(await _wodRepository.DeleteMultiWODByInId(getAllWOByProId)))
-                return false;
+            //if (!(await _wodRepository.DeleteMultiWODByInId(getAllWOByProId)))
+            //    return false;
 
             if (!(await _productRepository.DeleteProduct(getProductById)))
                 return false;

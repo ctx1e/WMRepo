@@ -68,5 +68,9 @@ namespace WMAPI.Repository.Implementations
         public async Task<List<WarehouseInDetail>> GetAllWIByProductId(int proId)
        => await _context.WarehouseInDetails.Where(x => x.ProductId == proId).ToListAsync();
 
+        public Task<WarehouseInDetail> GetWIDByProductId(int proId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
