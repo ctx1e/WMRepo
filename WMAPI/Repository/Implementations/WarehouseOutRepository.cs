@@ -26,7 +26,7 @@ namespace WMAPI.Repository.Implementations
             }
         }
 
- 
+
         public async Task<bool> DeleteWO(WarehouseOut warehouseOut)
         {
             try

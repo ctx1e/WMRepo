@@ -22,10 +22,10 @@ namespace WMAPI.Service.Implementations
 
         public async Task<bool> AddWO(GetWarehouseOutRequest warehouseOutRequest)
         {
-            foreach(var item in warehouseOutRequest.WarehouseOutDetailDTOs)
+            foreach (var item in warehouseOutRequest.WarehouseOutDetailDTOs)
             {
                 var checkQuanProductInInven = await _inventoryInRepository.GetProductInInventoryByProductId(item.ProductId);
-                if((checkQuanProductInInven.QuantityInStock - item.QuantityOut) < 0)
+                if ((checkQuanProductInInven.QuantityInStock - item.QuantityOut) < 0)
                 {
                     return false;
                 }

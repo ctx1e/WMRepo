@@ -23,7 +23,7 @@ namespace WMAPI.Service.Implementations
         {
             List<WarehouseInDetail> getListWID = new();
             List<Inventory> getListInventoryByProductId = new();
-            
+
             DateTime dateNow = DateTime.Now;
 
             var getWI = new WarehouseIn
@@ -40,13 +40,13 @@ namespace WMAPI.Service.Implementations
             foreach (var item in warehouseInRequest.WarehouseInDetailDTOs)
             {
                 var getInvenByProId = await _inventoryInRepository.GetProductInInventoryByProductId(item.ProductId);
-                if(getInvenByProId != null)
+                if (getInvenByProId != null)
                 {
                     getInvenByProId.QuantityInStock += item.QuantityIn;
                     getInvenByProId.LastUpdated = dateNow;
                     getListInventoryByProductId.Add(getInvenByProId);
                 }
-                
+
                 var getWID = new WarehouseInDetail
                 {
                     InId = getWI.InId,
@@ -96,11 +96,11 @@ namespace WMAPI.Service.Implementations
             //if (getListWIDInId == null || !(getListWIDInId.Any())) return false;
             if (getWIByInId == null) return false;
 
-            
+
             //if(!(await _widRepository.RemoveMultiWIDByWI(getListWIDInId))) 
             //    return false;
 
-            if(!(await _warehouseInRepository.DeleteWI(getWIByInId)))
+            if (!(await _warehouseInRepository.DeleteWI(getWIByInId)))
                 return false;
 
             return true;
@@ -115,6 +115,6 @@ namespace WMAPI.Service.Implementations
             return Convert.ToBase64String(shortBytes).Substring(0, 8); // 8 characters
         }
 
-      
+
     }
 }

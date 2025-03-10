@@ -15,12 +15,12 @@ namespace WMAPI.Service.Implementations
         private readonly IInventoryRepository _inventoryRepository;
         private readonly Cloudinary _cloudinary;
 
-        public ProductService(IProductRepository productRepository, IInventoryRepository inventoryRepository,Cloudinary cloudinary,
+        public ProductService(IProductRepository productRepository, IInventoryRepository inventoryRepository, Cloudinary cloudinary,
             IWIDRepository widRepository, IWODRepository wodRepository)
         {
             _productRepository = productRepository;
             _widRepository = widRepository;
-            _wodRepository = wodRepository; 
+            _wodRepository = wodRepository;
             _inventoryRepository = inventoryRepository;
             _cloudinary = cloudinary;
         }
@@ -41,7 +41,7 @@ namespace WMAPI.Service.Implementations
                 Image = getUrlImg,
             };
 
-             if (!(await _productRepository.AddProduct(newProduct)))
+            if (!(await _productRepository.AddProduct(newProduct)))
                 return false;
 
             var newInventory = new Inventory
@@ -49,7 +49,7 @@ namespace WMAPI.Service.Implementations
                 ProductId = newProduct.ProductId,
                 QuantityInStock = 0,
                 LastUpdated = DateTime.Now,
-                
+
             };
 
             if (!(await _inventoryRepository.AddProductIntoInventory(newInventory)))
@@ -65,7 +65,7 @@ namespace WMAPI.Service.Implementations
 
             var getAllWIByProId = await _widRepository.GetAllWIByProductId(proId);
             var getAllWOByProId = await _wodRepository.GetAllWOByProductId(proId);
-            foreach(var item in getAllWIByProId)
+            foreach (var item in getAllWIByProId)
             {
                 item.ProductId = 0;
             }
@@ -82,7 +82,7 @@ namespace WMAPI.Service.Implementations
 
             if (!(await _productRepository.DeleteProduct(getProductById)))
                 return false;
-            return true; 
+            return true;
         }
 
         public async Task<IEnumerable<Product>> GetAllProducts()
@@ -115,10 +115,10 @@ namespace WMAPI.Service.Implementations
                 return false;
 
             // Check Img and get Url
-            if(product.Image != null)
+            if (product.Image != null)
             {
-            var getUrlImg = await UploadImageAsync(product.Image);
-            getProductById.Image = getUrlImg;
+                var getUrlImg = await UploadImageAsync(product.Image);
+                getProductById.Image = getUrlImg;
 
             }
 
@@ -142,7 +142,7 @@ namespace WMAPI.Service.Implementations
             if (image == null || image.Length == 0)
             {
                 return null;
-            }   
+            }
 
             if (image.Length > maxFileSize)
             {

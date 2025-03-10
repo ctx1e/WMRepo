@@ -51,7 +51,7 @@ namespace WMAPI.Controllers
                 return BadRequest("WarehouseOutDetailDTOs is null!!");
             }
 
-            var isSuccess= await _warehouseOutService.AddWO(warehouseOutRequest);
+            var isSuccess = await _warehouseOutService.AddWO(warehouseOutRequest);
             if (!isSuccess)
             {
                 return Ok(isSuccess);

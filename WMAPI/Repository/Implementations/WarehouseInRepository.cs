@@ -20,7 +20,8 @@ namespace WMAPI.Repository.Implementations
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception) { 
+            catch (Exception)
+            {
                 return false;
             }
         }
@@ -33,7 +34,8 @@ namespace WMAPI.Repository.Implementations
                 await _context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception) {
+            catch (Exception)
+            {
                 return false;
             }
         }

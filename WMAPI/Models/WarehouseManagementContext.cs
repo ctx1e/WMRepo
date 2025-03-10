@@ -38,7 +38,7 @@ namespace WMAPI.Models
             {
                 entity.ToTable("Inventory");
 
-                entity.HasIndex(e => e.ProductId, "UQ__Inventor__47027DF4096D455F")
+                entity.HasIndex(e => e.ProductId, "UQ__Inventor__47027DF439DE747F")
                     .IsUnique();
 
                 entity.Property(e => e.InventoryId).HasColumnName("inventory_id");
@@ -79,11 +79,11 @@ namespace WMAPI.Models
             modelBuilder.Entity<WarehouseIn>(entity =>
             {
                 entity.HasKey(e => e.InId)
-                    .HasName("PK__Warehous__1CD08BE9EAD10864");
+                    .HasName("PK__Warehous__1CD08BE970145F2E");
 
                 entity.ToTable("Warehouse_In");
 
-                entity.HasIndex(e => e.InCode, "UQ__Warehous__CE5B7C52C81F4C70")
+                entity.HasIndex(e => e.InCode, "UQ__Warehous__CE5B7C52EAD8CB4E")
                     .IsUnique();
 
                 entity.Property(e => e.InId).HasColumnName("in_id");
@@ -109,7 +109,7 @@ namespace WMAPI.Models
             modelBuilder.Entity<WarehouseInDetail>(entity =>
             {
                 entity.HasKey(e => e.InDetailId)
-                    .HasName("PK__Warehous__8F4C7547D8B15D35");
+                    .HasName("PK__Warehous__8F4C7547ACC10EC0");
 
                 entity.ToTable("Warehouse_In_Details");
 
@@ -143,11 +143,11 @@ namespace WMAPI.Models
             modelBuilder.Entity<WarehouseOut>(entity =>
             {
                 entity.HasKey(e => e.OutId)
-                    .HasName("PK__Warehous__D7CC77D8C0C004E5");
+                    .HasName("PK__Warehous__D7CC77D8819B381E");
 
                 entity.ToTable("Warehouse_Out");
 
-                entity.HasIndex(e => e.OutCode, "UQ__Warehous__BD9478991FD91B95")
+                entity.HasIndex(e => e.OutCode, "UQ__Warehous__BD947899ADFC09AF")
                     .IsUnique();
 
                 entity.Property(e => e.OutId).HasColumnName("out_id");
@@ -173,7 +173,7 @@ namespace WMAPI.Models
             modelBuilder.Entity<WarehouseOutDetail>(entity =>
             {
                 entity.HasKey(e => e.OutDetailId)
-                    .HasName("PK__Warehous__0DC07A7FCD119C79");
+                    .HasName("PK__Warehous__0DC07A7F3CB4350B");
 
                 entity.ToTable("Warehouse_Out_Details");
 

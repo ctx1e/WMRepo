@@ -30,7 +30,7 @@ namespace WMAPI.Controllers
         public async Task<IActionResult> GetWIById(int proId)
         {
 
-            var proById= await _productService.GetProductById(proId);
+            var proById = await _productService.GetProductById(proId);
             if (proById == null)
             {
                 return Ok(proById);
