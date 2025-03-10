@@ -5,7 +5,7 @@ namespace WMAPI.Service.Interfaces
 {
     public interface IWIDService
     {
-        Task<IEnumerable<WIDListByInId>> GetAllWIDs(int inId);
+        Task<List<WIDListByInId>> GetAllWIDs(int inId);
         
 
     }

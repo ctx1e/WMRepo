@@ -41,6 +41,19 @@ namespace WMAPI.Repository.Implementations
             }
         }
 
+        public async Task<bool> RemoveMultiWODByWO(List<WarehouseOutDetail> wods)
+        {
+            try
+            {
+                _context.RemoveRange(wods);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
         public async Task<IEnumerable<WODListByOutId>> GetAllWOByOutId(int outId)
        => await _context.WarehouseOutDetails.Where(x => x.OutId == outId).Select(w => new WODListByOutId
        {

@@ -7,5 +7,6 @@ namespace WMAPI.Service.Interfaces
     {
         Task<IEnumerable<WODListByOutId>> GetAllWODs(int outId);
 
+
     }
 }

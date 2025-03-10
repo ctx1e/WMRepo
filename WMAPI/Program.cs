@@ -12,18 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-// Add service CORS
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowFrontEndWM",
-//        policy =>
-//        {
-//            policy.WithOrigins("https://localhost:7037", "http://localhost:5030")
-//                  .AllowAnyMethod()
-//                  .AllowAnyHeader();
-//        });
+//Add service CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontEndWM",
+       policy =>
+        {
+            policy.WithOrigins("https://localhost:7037", "http://localhost:5030")
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
 
-//});
+});
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
@@ -86,7 +86,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // User CORS
-//app.UseCors("AllowFrontEndWM");
+app.UseCors("AllowFrontEndWM");
 
 app.UseHttpsRedirection();
 

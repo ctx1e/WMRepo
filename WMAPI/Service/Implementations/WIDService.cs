@@ -13,13 +13,13 @@ namespace WMAPI.Service.Implementations
         {
             _widRepository = widRepository;
         }
-        public async Task<IEnumerable<WIDListByInId>> GetAllWIDs(int inId)
+        public async Task<List<WIDListByInId>> GetAllWIDs(int inId)
         {
-            var getWIDs = await _widRepository.GetAllWIByInId(inId);
+            var getWIDs = await _widRepository.GetAllWIDByInId(inId);
 
             if (!getWIDs.Any())
             {
-                return Enumerable.Empty<WIDListByInId>();
+                return new List<WIDListByInId>();
             }
             return getWIDs;
         }

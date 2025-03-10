@@ -41,8 +41,20 @@ namespace WMAPI.Repository.Implementations
                 return false;
             }
         }
-
-        public async Task<IEnumerable<WIDListByInId>> GetAllWIByInId(int inId)
+        public async Task<bool> RemoveMultiWIDByWI(List<WIDListByInId> wids)
+        {
+            try
+            {
+                _context.RemoveRange(wids);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+        public async Task<List<WIDListByInId>> GetAllWIDByInId(int inId)
         => await _context.WarehouseInDetails.Where(x => x.InId == inId).Select(w => new WIDListByInId
         {
             InDetailId = w.InDetailId,
@@ -55,5 +67,6 @@ namespace WMAPI.Repository.Implementations
 
         public async Task<List<WarehouseInDetail>> GetAllWIByProductId(int proId)
        => await _context.WarehouseInDetails.Where(x => x.ProductId == proId).ToListAsync();
+
     }
 }

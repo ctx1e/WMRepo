@@ -1,0 +1,29 @@
+﻿.container {
+    max-width: 900px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    font-weight: bold;
+}
+
+.table {
+    width: 100%;
+}
+
+    .table th, .table td {
+        padding: 10px;
+        text-align: center;
+    }
+
+    .table thead {
+        background: #f8f9fa;
+    }
+
+.btn {
+    margin-top: 5px;
+}
+    

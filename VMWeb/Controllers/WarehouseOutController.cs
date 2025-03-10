@@ -56,5 +56,69 @@ namespace VMWeb.Controllers
 
             return View(getWODVM);
         }
+
+        public async Task<IActionResult> WarehouseOutAdd()
+        {
+            return View(new WarehouseOutAddResponse());
+        }
+
+        public async Task<IActionResult> HandleWOAdd(WarehouseOutAddResponse model)
+        {
+
+            decimal totalPrice = 0;
+
+            foreach (var item in model.WarehouseOutDetailDTOs)
+            {
+                // Tính toán tổng tiền của từng sản phẩm (PriceIn * QuantityIn)
+                item.TotalPrice = item.PriceOut * item.QuantityOut;
+
+                // Cộng vào tổng tiền nhập kho
+                totalPrice += item.TotalPrice;
+            }
+
+            // Cập nhật tổng tiền nhập vào model
+            model.TotalPriceOut = totalPrice;
+            try
+            {
+                // Gửi dữ liệu sang API để tạo warehouse in
+                bool isSuccess = await _warehouseOutService.AddWarehouseOutAsync(model);
+
+                if (isSuccess)
+                {
+                    TempData["SuccessMessage"] = "Warehouse Out added successfully!";
+                    return RedirectToAction("WarehouseOutView");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to add Warehouse Out. Please try again.";
+                    return RedirectToAction("WarehouseOutAdd", model);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                TempData["ErrorMessage"] = "An error occurred while processing your request.";
+                return RedirectToAction("WarehouseOutAdd", model);
+            }
+
+        }
+
+        public async Task<IActionResult> HandleDelWO(int outId)
+        {
+            var getWO = await _warehouseOutService.GetWarehouseOutByOutIdAsync(outId);
+            bool isSuccess = await _warehouseOutService.DeleteWarehouseOutAsync(outId);
+
+            if (isSuccess)
+            {
+                TempData["SuccessMessage"] = $"Delete WarehouseOut {getWO.OutCode} successfully!";
+                return RedirectToAction("WarehouseOutView");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = $"Failed to delete WarehouseOut {getWO.OutCode}!. Please try again";
+                return RedirectToAction("WarehouseOutView");
+            }
+        }
+
     }
 }

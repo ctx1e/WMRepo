@@ -1,5 +1,7 @@
 ﻿using Newtonsoft.Json;
+using System.Text;
 using VMWeb.Models;
+using VMWeb.Models.ViewModel;
 
 namespace VMWeb.Service
 {
@@ -76,6 +78,46 @@ namespace VMWeb.Service
             catch (HttpRequestException)
             {
                 return (new List<WarehouseOutDetail>());
+            }
+        }
+
+        public async Task<bool> AddWarehouseOutAsync(WarehouseOutAddResponse warehouseOut)
+        {
+            try
+            {
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(warehouseOut), Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync($"{API_URL}/addWarehouseOut", jsonContent);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
+        public async Task<bool> DeleteWarehouseOutAsync(int outId)
+        {
+            try
+            {
+
+                var response = await _httpClient.DeleteAsync($"{API_URL}/deleteWO/{outId}");
+
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
             }
         }
     }

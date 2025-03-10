@@ -28,7 +28,7 @@ namespace WMAPI.Service.Implementations
 
             var getWI = new WarehouseIn
             {
-                InCode = warehouseInRequest.SupplierName + "_" + "IN" + await GenerateShortUniqueCode(),
+                InCode = warehouseInRequest.SupplierName + "_" + "In_" + await GenerateShortUniqueCode(),
                 SupplierName = warehouseInRequest.SupplierName,
                 TotalPriceIn = warehouseInRequest.TotalPriceIn,
                 InDate = dateNow
@@ -88,6 +88,24 @@ namespace WMAPI.Service.Implementations
             return getWIById;
         }
 
+        public async Task<bool> DeleteWI(int inId)
+        {
+            //var getListWIDInId = await _widRepository.GetAllWIDByInId(inId);
+            var getWIByInId = await GetWIById(inId);
+
+            //if (getListWIDInId == null || !(getListWIDInId.Any())) return false;
+            if (getWIByInId == null) return false;
+
+            
+            //if(!(await _widRepository.RemoveMultiWIDByWI(getListWIDInId))) 
+            //    return false;
+
+            if(!(await _warehouseInRepository.DeleteWI(getWIByInId)))
+                return false;
+
+            return true;
+        }
+
         public async Task<string> GenerateShortUniqueCode()
         {
             Guid guid = Guid.NewGuid();
@@ -96,5 +114,7 @@ namespace WMAPI.Service.Implementations
             Array.Copy(bytes, 0, shortBytes, 0, 6); // Get 6 byte (48-bit)
             return Convert.ToBase64String(shortBytes).Substring(0, 8); // 8 characters
         }
+
+      
     }
 }

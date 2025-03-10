@@ -58,5 +58,16 @@ namespace WMAPI.Controllers
             }
             return Ok(isSuccess);
         }
+
+        [HttpDelete("deleteWO/{outId}")]
+        public async Task<IActionResult> DeleteWarehouseIn(int outId)
+        {
+            var isSuccess = await _warehouseOutService.DeleteWO(outId);
+            if (!isSuccess)
+            {
+                return Ok(isSuccess);
+            }
+            return Ok(isSuccess);
+        }
     }
 }

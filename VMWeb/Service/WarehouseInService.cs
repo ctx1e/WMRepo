@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Text;
 using VMWeb.Models;
 using VMWeb.Models.ViewModel;
 
@@ -78,6 +79,47 @@ namespace VMWeb.Service
             catch (HttpRequestException)
             {
                 return (new List<WarehouseInDetail>());
+            }
+        }
+
+        public async Task<bool> AddWarehouseInAsync(WarehouseInAddResponse warehouseIn)
+        {
+            try
+            {
+                var jsonContent = new StringContent(JsonConvert.SerializeObject(warehouseIn), Encoding.UTF8, "application/json");
+
+                var response = await _httpClient.PostAsync($"{API_URL}/addWarehouseIn", jsonContent);
+
+                return response.IsSuccessStatusCode;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
+
+        public async Task<bool> DeleteWarehouseInAsync(int inId)
+        {
+            try
+            {
+
+                var response = await _httpClient.DeleteAsync($"{API_URL}/deleteWI/{inId}");
+
+   
+                if (response.IsSuccessStatusCode)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
             }
         }
     }

@@ -10,12 +10,15 @@
 }
 
 <div class="container mt-4">
+    <div>
+        <div id="notification" class="notification"></div>
+    </div>
     <h2 class="text-center mb-4">Warehouse Out List</h2>
 
     <!-- Search Bar + Add Button -->
     <div class="row mb-3 mx-3">
         <div class="col-md-6">
-            <a asp-action="WarehouseOutAdd" class="btn btn-warning">Add WarehouseOut</a>
+            <a asp-action="WarehouseOutAdd" class="btn btn-warning"><i class="bi bi-plus-circle"></i> Add WarehouseOut</a>
         </div>
         <div class="col-md-6 text-end d-flex">
             <form asp-action="WarehouseOutView" method="get" class="d-flex justify-content-end w-100">
@@ -31,8 +34,8 @@
         <table class="table warehouse-table">
             <thead>
                 <tr>
-                    <th class="col-2 text-center">#</th>  <!-- Làm to cột ID -->
-                    <th class="col-2">Out Code</th>  <!-- Làm to cột Out Code -->
+                    <th class="col-1 text-center">#</th>  <!-- Làm to cột ID -->
+                    <th class="col-3">Out Code</th>  <!-- Làm to cột Out Code -->
                     <th class="col-2">Recipant Name</th>
                     <th class="col-2">Total Price</th>
                     <th class="col-1 text-center">Date</th>
@@ -53,7 +56,7 @@
                             <td class="text-center">@item.OutDate.ToString("dd/MM/yyyy")</td>
                             <td class="text-center">
                                 <a asp-controller="WarehouseOut" asp-action="WarehouseOutDetail" asp-route-outId="@item.OutId" class="btn btn-sm btn-outline-info">View</a>
-                                <a asp-controller="WarehouseOut" asp-action="WarehouseOutDetail" asp-route-outId="@item.OutId" class="btn btn-sm btn-outline-danger" onclick="return confirmDelete('@item.OutCode')">Delete</a>
+                                <a asp-controller="WarehouseOut" asp-action="HandleDelWO" asp-route-outId="@item.OutId" class="btn btn-sm btn-outline-danger" onclick="return confirmDelete('@item.OutCode')">Delete</a>
                             </td>
                         </tr>
                         count++;
@@ -84,6 +87,35 @@
 
 @section Scripts {
     <script>
+        // Kiểm tra nếu có thông báo từ Controller
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                                        showNotification('@TempData["SuccessMessage"]', 'success');
+            </text>
+        }
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                                    showNotification('@TempData["ErrorMessage"]', 'error');
+            </text>
+        }
+
+        // Hàm để hiển thị thông báo
+        function showNotification(message, type) {
+            var notification = document.getElementById("notification");
+            notification.innerText = message;
+            notification.classList.add(type); // Thêm class success hoặc error để đổi màu
+
+            // Hiển thị notification
+            notification.style.display = 'block';
+
+            // Ẩn notification sau 2s
+            setTimeout(function () {
+                notification.style.display = 'none';
+            }, 2000);
+        }
+
         function confirmDelete(code) {
             // Hiển thị thông báo xác nhận có bao gồm mã OutCode
             return confirm("Are you sure you want to delete this warehouse receipt with OutCode: " + code + "?");

@@ -54,7 +54,7 @@ namespace VMWeb.Controllers
 
         public async Task<IActionResult> ProductAdd()
         {
-            return View();
+            return View(new Product());
         }
 
         public async Task<IActionResult> HandleAddProduct(Product product)
@@ -66,7 +66,7 @@ namespace VMWeb.Controllers
             if (product.Image.Length > MaxFileSize)
             {
                 ModelState.AddModelError("Image", "File size must be less than 10MB.");
-                return RedirectToAction("product");
+                return RedirectToAction("product", product);
             }
             else
             {
@@ -74,7 +74,7 @@ namespace VMWeb.Controllers
                 if (!check)
                 {
                     TempData["ErrorMessage"] = "Failed to add product!";
-                    return RedirectToAction("ProductAdd");
+                    return RedirectToAction("ProductAdd", product);
                 }
 
                 TempData["SuccessMessage"] = "Product added successfully";

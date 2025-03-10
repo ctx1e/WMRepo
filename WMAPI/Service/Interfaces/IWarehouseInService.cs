@@ -8,5 +8,7 @@ namespace WMAPI.Service.Interfaces
         Task<IEnumerable<WarehouseIn>> GetAllWIs();
         Task<WarehouseIn?> GetWIById(int inId);
         Task<bool> AddWI(GetWarehouseInRequest warehouseInRequest);
+        Task<bool> DeleteWI(int inId);
+
     }
 }

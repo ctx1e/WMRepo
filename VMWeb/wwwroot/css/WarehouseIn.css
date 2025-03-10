@@ -51,3 +51,24 @@ td:nth-child(4) {
 .search-input {
     width: 250px;
 }
+.notification {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #4CAF50; /* Màu xanh cho thông báo thành công */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 14px;
+    z-index: 9999;
+    transition: opacity 0.5s ease;
+}
+
+    .notification.error {
+        background-color: #f44336; /* Màu đỏ cho thông báo lỗi */
+    }
+
+    .notification.success {
+        background-color: #4CAF50; /* Màu xanh cho thông báo thành công */
+    }

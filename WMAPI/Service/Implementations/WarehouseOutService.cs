@@ -1,5 +1,6 @@
 ﻿using WMAPI.DTO;
 using WMAPI.Models;
+using WMAPI.Repository.Implementations;
 using WMAPI.Repository.Interfaces;
 using WMAPI.Service.Interfaces;
 
@@ -37,7 +38,7 @@ namespace WMAPI.Service.Implementations
 
             var getWO = new WarehouseOut
             {
-                OutCode = warehouseOutRequest.RecipientName + "_" + "OUT" + await GenerateShortUniqueCode(),
+                OutCode = warehouseOutRequest.RecipientName + "_" + "Out_" + await GenerateShortUniqueCode(),
                 RecipientName = warehouseOutRequest.RecipientName,
                 TotalPriceOut = warehouseOutRequest.TotalPriceOut,
                 OutDate = dateNow
@@ -97,6 +98,23 @@ namespace WMAPI.Service.Implementations
             return getWOById;
         }
 
+        public async Task<bool> DeleteWO(int inId)
+        {
+            //var getListWIDInId = await _widRepository.GetAllWIDByInId(inId);
+            var getWIByInId = await GetWOById(inId);
+
+            //if (getListWIDInId == null || !(getListWIDInId.Any())) return false;
+            if (getWIByInId == null) return false;
+
+
+            //if(!(await _widRepository.RemoveMultiWIDByWI(getListWIDInId))) 
+            //    return false;
+
+            if (!(await _warehouseOutRepository.DeleteWO(getWIByInId)))
+                return false;
+
+            return true;
+        }
         public async Task<string> GenerateShortUniqueCode()
         {
             Guid guid = Guid.NewGuid();

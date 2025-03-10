@@ -1,0 +1,73 @@
+﻿@model VMWeb.Models.ViewModel.WarehouseOutAddResponse
+
+@{
+    ViewData["Title"] = "Add Warehouse Out";
+    Layout = "_Layout";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/WarehouseOutAdd.css" asp-append-version="true" />
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Add Warehouse Out</h2>
+
+    <form id="warehouseOutForm" asp-action="HandleWOAdd" method="post">
+        <!-- Chọn Recipient -->
+        <div class="form-group">
+            <label for="recipientSelect">Select Recipient</label>
+            <select id="recipientSelect" asp-for="RecipientName" class="form-control" required>
+                <option value="">-- Select Recipient --</option>
+                <option value="Viettel Store">Viettel Store</option>
+                <option value="FPT Trading">FPT Trading</option>
+                <option value="CellphoneS">CellphoneS</option>
+                <option value="ShopDunk">ShopDunk</option>
+                <option value="OneWay">OneWay</option>
+            </select>
+        </div>
+
+        <!-- Chọn sản phẩm từ API -->
+        <div class="form-group mt-3">
+            <label for="productSelect">Select Product</label>
+            <select id="productSelect" class="form-control">
+                <option value="">-- Select Product --</option>
+                <!-- Danh sách sản phẩm sẽ được load bằng AJAX -->
+            </select>
+            <button type="button" class="btn btn-outline-success mt-2" onclick="addProduct()">Add Product</button>
+        </div>
+
+        <!-- Bảng nhập dữ liệu sản phẩm -->
+        <div class="table-responsive mt-4">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Product Name</th>
+                        <th>Quantity Out</th>
+                        <th>Price Out</th>
+                        <th>Total Price Out</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="productTableBody">
+                    <!-- Dữ liệu sản phẩm sẽ được thêm vào đây -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Hiển thị tổng giá trị đơn xuất -->
+        <div class="form-group mt-3">
+            <label><strong>Total Price Out:</strong></label>
+            <input type="text" id="totalPriceOut" asp-for="TotalPriceOut" class="form-control" readonly />
+        </div>
+
+        <!-- Nút Submit -->
+        <div class="text-center mt-4">
+            <button type="submit" id="submitBtn" class="btn btn-primary" disabled>Submit Warehouse Out</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="~/js/WOAdd.js"></script>
+}

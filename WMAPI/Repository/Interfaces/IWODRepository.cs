@@ -10,5 +10,6 @@ namespace WMAPI.Repository.Interfaces
 
         Task<bool> AddMultiWODByInId(List<WarehouseOutDetail> wods);
         Task<bool> DeleteMultiWODByInId(List<WarehouseOutDetail> wods);
+        Task<bool> RemoveMultiWODByWO(List<WarehouseOutDetail> wods);
     }
 }

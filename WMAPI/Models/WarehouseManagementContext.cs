@@ -89,7 +89,7 @@ namespace WMAPI.Models
                 entity.Property(e => e.InId).HasColumnName("in_id");
 
                 entity.Property(e => e.InCode)
-                    .HasMaxLength(20)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("in_code");
 
@@ -153,7 +153,7 @@ namespace WMAPI.Models
                 entity.Property(e => e.OutId).HasColumnName("out_id");
 
                 entity.Property(e => e.OutCode)
-                    .HasMaxLength(20)
+                    .HasMaxLength(100)
                     .IsUnicode(false)
                     .HasColumnName("out_code");
 
