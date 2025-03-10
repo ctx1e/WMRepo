@@ -38,7 +38,7 @@ namespace WMAPI.Models
             {
                 entity.ToTable("Inventory");
 
-                entity.HasIndex(e => e.ProductId, "UQ__Inventor__47027DF439DE747F")
+                entity.HasIndex(e => e.ProductId, "UQ__Inventor__47027DF49CD1E4CC")
                     .IsUnique();
 
                 entity.Property(e => e.InventoryId).HasColumnName("inventory_id");
@@ -79,11 +79,11 @@ namespace WMAPI.Models
             modelBuilder.Entity<WarehouseIn>(entity =>
             {
                 entity.HasKey(e => e.InId)
-                    .HasName("PK__Warehous__1CD08BE970145F2E");
+                    .HasName("PK__Warehous__1CD08BE92FB4B6B7");
 
                 entity.ToTable("Warehouse_In");
 
-                entity.HasIndex(e => e.InCode, "UQ__Warehous__CE5B7C52EAD8CB4E")
+                entity.HasIndex(e => e.InCode, "UQ__Warehous__CE5B7C52C81BDB3B")
                     .IsUnique();
 
                 entity.Property(e => e.InId).HasColumnName("in_id");
@@ -109,7 +109,7 @@ namespace WMAPI.Models
             modelBuilder.Entity<WarehouseInDetail>(entity =>
             {
                 entity.HasKey(e => e.InDetailId)
-                    .HasName("PK__Warehous__8F4C7547ACC10EC0");
+                    .HasName("PK__Warehous__8F4C75479CB3C10D");
 
                 entity.ToTable("Warehouse_In_Details");
 
@@ -137,17 +137,18 @@ namespace WMAPI.Models
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WarehouseInDetails)
                     .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK__Warehouse__produ__3C69FB99");
             });
 
             modelBuilder.Entity<WarehouseOut>(entity =>
             {
                 entity.HasKey(e => e.OutId)
-                    .HasName("PK__Warehous__D7CC77D8819B381E");
+                    .HasName("PK__Warehous__D7CC77D8BB671953");
 
                 entity.ToTable("Warehouse_Out");
 
-                entity.HasIndex(e => e.OutCode, "UQ__Warehous__BD947899ADFC09AF")
+                entity.HasIndex(e => e.OutCode, "UQ__Warehous__BD9478994FAED0CD")
                     .IsUnique();
 
                 entity.Property(e => e.OutId).HasColumnName("out_id");
@@ -173,7 +174,7 @@ namespace WMAPI.Models
             modelBuilder.Entity<WarehouseOutDetail>(entity =>
             {
                 entity.HasKey(e => e.OutDetailId)
-                    .HasName("PK__Warehous__0DC07A7F3CB4350B");
+                    .HasName("PK__Warehous__0DC07A7F48CAB686");
 
                 entity.ToTable("Warehouse_Out_Details");
 
@@ -201,6 +202,7 @@ namespace WMAPI.Models
                 entity.HasOne(d => d.Product)
                     .WithMany(p => p.WarehouseOutDetails)
                     .HasForeignKey(d => d.ProductId)
+                    .OnDelete(DeleteBehavior.SetNull)
                     .HasConstraintName("FK__Warehouse__produ__4316F928");
             });
 

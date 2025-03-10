@@ -1,7 +1,9 @@
 ﻿let selectedProducts = [];
+let productQuantities = {}; // Object to store available quantities of products
 
-// Load danh sách sản phẩm từ API khi trang tải
+// Load danh sách sản phẩm và số lượng tồn kho từ API khi trang tải
 document.addEventListener("DOMContentLoaded", function () {
+    // Load danh sách sản phẩm từ API
     fetch('https://localhost:7000/api/Product/getListProducts')
         .then(response => response.json())
         .then(data => {
@@ -11,6 +13,15 @@ document.addEventListener("DOMContentLoaded", function () {
                 option.value = product.productId;
                 option.textContent = product.productName;
                 productSelect.appendChild(option);
+
+                // Lưu số lượng sản phẩm có sẵn từ API Inventory vào object productQuantities
+                fetch(`https://localhost:7000/api/Inventory/getQISByProId/${product.productId}`)
+                    .then(inventoryResponse => inventoryResponse.json())
+                    .then(inventoryData => {
+                        // Lưu số lượng tồn kho của sản phẩm vào productQuantities
+                        productQuantities[product.productId] = inventoryData.quantityInStock; // Giả sử API trả về 'quantityInStock'
+                    })
+                    .catch(error => console.error('Error loading inventory data:', error));
             });
         })
         .catch(error => console.error('Error loading products:', error));
@@ -41,6 +52,19 @@ function addProduct() {
         return;
     }
 
+    // Kiểm tra số lượng tồn kho
+    const availableQuantity = productQuantities[selectedOption.value];
+    if (availableQuantity === 0) {
+        alert("This product is out of stock and cannot be added.");
+        return;
+    }
+    if (!availableQuantity) {
+        alert("Product quantity information is not available.");
+        return;
+    }
+
+    
+
     if (selectedProducts.includes(selectedOption.value)) {
         alert("This product is already added!");
         return;
@@ -58,7 +82,11 @@ function addProduct() {
             <input type="hidden" name="WarehouseOutDetailDTOs[${rowIndex}].ProductId" value="${selectedOption.value}" />
             <input type="text" class="form-control" name="WarehouseOutDetailDTOs[${rowIndex}].ProductName" value="${selectedOption.text}" readonly>
         </td>
-        <td><input type="number" class="form-control quantity" name="WarehouseOutDetailDTOs[${rowIndex}].QuantityOut" min="1" value="1" oninput="updateTotal(this, ${rowIndex})"></td>
+        <td>
+            <input type="number" class="form-control quantity" name="WarehouseOutDetailDTOs[${rowIndex}].QuantityOut" min="1" value="1" 
+                oninput="updateTotal(this, ${rowIndex}, ${availableQuantity})" />
+            <span> (Available: ${availableQuantity})</span>
+        </td>
         <td><input type="number" class="form-control price" name="WarehouseOutDetailDTOs[${rowIndex}].PriceOut" min="0.01" step="0.01" value="0" oninput="updateTotal(this, ${rowIndex})"></td>
         <td class="total-price" id="total-${rowIndex}">$0.00</td>
         <td><button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(this, '${selectedOption.value}')">Remove</button></td>
@@ -71,19 +99,18 @@ function addProduct() {
     checkFormValidity(); // Kiểm tra lại form sau khi thêm sản phẩm
 }
 
-function removeProduct(button, productId) {
-    selectedProducts = selectedProducts.filter(id => id !== productId);
-    button.closest("tr").remove();
-
-    updateGrandTotal();
-    checkFormValidity(); // Kiểm tra lại form sau khi xóa sản phẩm
-}
-
-function updateTotal(input, index) {
+function updateTotal(input, index, availableQuantity) {
     const row = input.closest("tr");
     const quantity = row.querySelector(".quantity").value;
     const price = row.querySelector(".price").value;
     const totalCell = document.getElementById(`total-${index}`);
+
+    // Kiểm tra số lượng không vượt quá số lượng có sẵn
+    if (quantity > availableQuantity) {
+        alert(`Cannot select more than the available quantity (${availableQuantity})`);
+        row.querySelector(".quantity").value = availableQuantity; // Set lại số lượng là số lượng có sẵn
+        return;
+    }
 
     if (quantity < 1) {
         row.querySelector(".quantity").value = 1; // Không cho phép số âm hoặc 0
@@ -106,4 +133,12 @@ function updateGrandTotal() {
     });
 
     document.getElementById("totalPriceOut").value = `$${total.toFixed(2)}`;
+}
+
+function removeProduct(button, productId) {
+    selectedProducts = selectedProducts.filter(id => id !== productId);
+    button.closest("tr").remove();
+
+    updateGrandTotal();
+    checkFormValidity(); // Kiểm tra lại form sau khi xóa sản phẩm
 }

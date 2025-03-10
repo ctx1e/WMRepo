@@ -22,5 +22,13 @@ namespace WMAPI.Controllers
 
             return Ok(inventories);
         }
+        [HttpGet("getQISByProId/{proId}")]
+        public async Task<IActionResult> GetQISByProId(int proId)
+        {
+            var inventory = await _inventoryService.getQISbyProId(proId);
+
+            return Ok(inventory);
+        }
     }
+
 }

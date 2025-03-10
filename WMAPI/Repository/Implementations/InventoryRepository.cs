@@ -14,6 +14,12 @@ namespace WMAPI.Repository.Implementations
             _context = context;
         }
 
+        public async Task<Inventory> getQISbyProId(int proId)
+        {
+            var getInvenById = await _context.Inventories.FirstOrDefaultAsync(x => x.ProductId == proId);
+
+            return getInvenById;
+        }
         public async Task<bool> AddProductIntoInventory(Inventory inventory)
         {
             try

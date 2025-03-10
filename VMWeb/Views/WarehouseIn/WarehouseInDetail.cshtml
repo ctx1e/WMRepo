@@ -41,7 +41,8 @@
                     {
                         <tr>
                             <td>@count</td>
-                            <td>@item.ProductName</td>
+                            <td>@(string.IsNullOrEmpty(item.ProductName) ? "This product is no longer available." : item.ProductName )</td>
+
                             <td>@item.QuantityIn</td>
                             <td>@item.PriceIn.ToString("C")</td>
                             <td>@item.TotalPrice.ToString("C")</td>

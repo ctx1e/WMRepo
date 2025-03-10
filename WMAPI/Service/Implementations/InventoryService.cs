@@ -35,5 +35,8 @@ namespace WMAPI.Service.Implementations
             }
             return getInventories;
         }
+
+        public async Task<Inventory> getQISbyProId(int proId)
+        => await _inventoryRepository.getQISbyProId(proId);
     }
 }

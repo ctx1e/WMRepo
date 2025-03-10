@@ -60,13 +60,14 @@ namespace VMWeb.Controllers
         public async Task<IActionResult> HandleAddProduct(Product product)
         {
 
+
             // Kiểm tra kích thước file (ở đây là giới hạn 10MB)
             const long MaxFileSize = 10 * 1024 * 1024; // 10MB
             var checkIMG = product.Image.Length;
             if (product.Image.Length > MaxFileSize)
             {
                 ModelState.AddModelError("Image", "File size must be less than 10MB.");
-                return RedirectToAction("product", product);
+                return RedirectToAction("ProductAdd", product);
             }
             else
             {
