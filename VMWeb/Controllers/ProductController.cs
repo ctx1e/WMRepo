@@ -16,7 +16,7 @@ namespace VMWeb.Controllers
             _productService = productService;
 
         }
-        public async Task<IActionResult> ProductView(int page = 1, int pageSize = 8)
+        public async Task<IActionResult> ProductView(int page = 1, int pageSize = 5)
         {
             var productData = await _productService.GetProductsAsync();
 

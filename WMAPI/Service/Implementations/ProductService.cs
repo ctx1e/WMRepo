@@ -1,5 +1,6 @@
 ﻿using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using System.Net;
 using WMAPI.DTO;
 using WMAPI.Models;
 using WMAPI.Repository.Interfaces;
@@ -61,7 +62,7 @@ namespace WMAPI.Service.Implementations
         public async Task<bool> DeleteProduct(int proId)
         {
             var getProductById = await GetProductById(proId);
-            if (getProductById == null) return false;
+            //if (getProductById == null) return false;
 
             //var getAllWIByProId = await _widRepository.GetAllWIByProductId(proId);
             //var getAllWOByProId = await _wodRepository.GetAllWOByProductId(proId);
@@ -79,9 +80,21 @@ namespace WMAPI.Service.Implementations
 
             //if (!(await _wodRepository.DeleteMultiWODByInId(getAllWOByProId)))
             //    return false;
+            if (getProductById != null && !string.IsNullOrEmpty(getProductById.Image))
+            {
+                // Xóa ảnh khỏi Cloudinary
+                await DeleteImageFromCloudinaryAsync(getProductById.Image);
+                   
 
-            if (!(await _productRepository.DeleteProduct(getProductById)))
+                // Tiến hành xóa sản phẩm khỏi cơ sở dữ liệu
+                if (!(await _productRepository.DeleteProduct(getProductById)))
+                    return false;
+            } else
+            {
                 return false;
+            }
+
+           
             return true;
         }
 
@@ -160,6 +173,7 @@ namespace WMAPI.Service.Implementations
                         //PublicId = $"product_image_{id}",
 
                         File = new FileDescription(image.FileName, stream),
+                        Transformation = new Transformation().Quality("auto").FetchFormat("auto"),
                         UploadPreset = "wmproject_img_products",
                         UseFilename = true,     // Dùng tên file gốc làm PublicId
                         UniqueFilename = true
@@ -184,5 +198,50 @@ namespace WMAPI.Service.Implementations
             Array.Copy(bytes, 0, shortBytes, 0, 6); // Get 6 byte (48-bit)
             return Convert.ToBase64String(shortBytes).Substring(0, 8); // 8 characters
         }
+
+        public async Task<bool> DeleteImageFromCloudinaryAsync(string imageUrl)
+        {
+            string publicId = ExtractPublicIdFromUrl(imageUrl);
+
+            if (string.IsNullOrEmpty(publicId))
+            {
+                return false;
+            }
+
+            try
+            {
+                var deletionParams = new DeletionParams(publicId);
+                var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+
+                if (deletionResult.StatusCode == HttpStatusCode.OK)
+                {
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine($"Error deleting image: {deletionResult.Error?.Message}");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+                return false;
+            }
+        }
+        public string ExtractPublicIdFromUrl(string url)
+        {
+            Uri uri = new Uri(url);
+            string path = uri.AbsolutePath; // /image/upload/v1741920422/HelloApple_vocr5r.jpg
+
+            // Tách phần public_id từ path (bỏ phần /image/upload/ và phiên bản)
+            string[] pathParts = path.Split('/');
+            string publicIdWithVersion = pathParts[4]; // v1741920422
+            string publicId = pathParts[5].Split('.')[0]; // HelloApple_vocr5r
+
+            return publicId;
+        }
     }
+
+
 }

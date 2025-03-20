@@ -38,7 +38,7 @@
                     <th class="col-1 text-center">#</th>  <!-- Làm to cột ID -->
                     <th class="col-3">In Code</th>  <!-- Làm to cột In Code -->
                     <th class="col-2">Supplier</th>
-                    <th class="col-2 text-end">Total Price</th>
+                    <th class="col-2">Total Price</th>
                     <th class="col-2 text-center">Date</th>
                     <th class="col-3 text-center">Detail</th> <!-- Thu nhỏ cột Detail -->
                 </tr>
@@ -53,7 +53,7 @@
                             <td class="fw-bold text-center">@count</td>
                             <td class="fw-bold">@item.InCode</td> <!-- Mã to hơn -->
                             <td>@item.SupplierName</td>
-                            <td class="text-end">@item.TotalPriceIn.ToString("C")</td>
+                            <td>@item.TotalPriceIn.ToString("C")</td>
                             <td class="text-center">@item.InDate.ToString("dd/MM/yyyy")</td>
                             <td class="text-center">
                                 <a asp-controller="WarehouseIn" asp-action="WarehouseInDetail" asp-route-inId="@item.InId" class="btn btn-sm btn-outline-info">View</a>

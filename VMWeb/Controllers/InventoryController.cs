@@ -13,7 +13,7 @@ namespace VMWeb.Controllers
             _inventoryService = inventoryService;
         }
 
-        public async Task<IActionResult> InventoryView(int page = 1, int pageSize = 8)
+        public async Task<IActionResult> InventoryView(int page = 1, int pageSize = 10)
         {
             var inventoryData = await _inventoryService.GetInventoryDataAsync();
 

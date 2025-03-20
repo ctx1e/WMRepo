@@ -30,7 +30,7 @@ namespace VMWeb.Controllers
             }
 
             // Áp dụng phân trang
-            int pageSize = 10;
+            int pageSize = 5;
             int totalRecords = warehouseList.Count();
             int totalPages = (int)Math.Ceiling((double)totalRecords / pageSize);
 
