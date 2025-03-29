@@ -11,7 +11,10 @@
 
 <div class="container mt-4">
     <h2 class="text-center mb-4">Warehouse In Detail</h2>
-
+    <!-- Nút xuất Excel -->
+    <a  href="@Url.Action("ExportToExcel", new { inId = Model.WarehouseIn.InId })" >
+        <button>Export to Excel</button>
+    </a>
     <!-- Warehouse Info -->
     <div class="card p-3 mb-4 warehouse-detail-card">
         <p><strong>In Code:</strong> @Model.WarehouseIn.InCode</p>
@@ -63,4 +66,5 @@
     <div class="text-center mt-4">
         <a asp-controller="WarehouseIn" asp-action="WarehouseInView" class="btn btn-secondary">Back to Warehouse List</a>
     </div>
+
 </div>

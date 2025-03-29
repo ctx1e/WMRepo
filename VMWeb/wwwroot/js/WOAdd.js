@@ -63,7 +63,7 @@ function addProduct() {
         return;
     }
 
-    
+
 
     if (selectedProducts.includes(selectedOption.value)) {
         alert("This product is already added!");

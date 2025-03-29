@@ -1,6 +1,8 @@
 ﻿
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WMAPI.DTO;
+using WMAPI.Models;
 using WMAPI.Service.Interfaces;
 
 namespace WMAPI.Controllers
@@ -9,12 +11,15 @@ namespace WMAPI.Controllers
     [ApiController]
     public class WarehouseInController : ControllerBase
     {
+
+        private readonly WarehouseManagementContext _context;
         private readonly IWarehouseInService _warehouseInService;
 
 
-        public WarehouseInController(IWarehouseInService warehouseInService)
+        public WarehouseInController(IWarehouseInService warehouseInService, WarehouseManagementContext context)
         {
             _warehouseInService = warehouseInService;
+            _context = context;
         }
 
 
@@ -68,6 +73,16 @@ namespace WMAPI.Controllers
                 return Ok(isSuccess);
             }
             return Ok(isSuccess);
+        }
+
+        [HttpGet("GetMaxPrice/{proId}")]
+        public async Task<IActionResult> GetMaxPrice(int proId)
+        {
+   var getMaxPrice = await _context.WarehouseInDetails
+                                    .Where(x => x.ProductId == proId)
+                                    .MaxAsync(y => (decimal?)y.PriceIn) ?? 0; // Trả về 0 nếu không có giá trị
+
+    return Ok(new { priceIn = getMaxPrice });
         }
 
     }

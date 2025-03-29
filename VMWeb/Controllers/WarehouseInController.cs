@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using OfficeOpenXml;
+using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using VMWeb.Models;
 using VMWeb.Models.ViewModel;
 using VMWeb.Service;
@@ -11,10 +14,16 @@ namespace VMWeb.Controllers
     {
 
         private readonly WarehouseInService _warehouseInService;
+        private readonly HttpClient _httpClient;
 
-        public WarehouseInController(WarehouseInService warehouseInService)
+
+
+
+        public WarehouseInController(WarehouseInService warehouseInService, HttpClient httpClient)
         {
             _warehouseInService = warehouseInService;
+            _httpClient = httpClient;
+
         }
         public async Task<IActionResult> WarehouseInView(string searchTerm, int page = 1)
         {
@@ -99,7 +108,7 @@ namespace VMWeb.Controllers
             {
                 Console.WriteLine($"Error: {ex.Message}");
                 TempData["ErrorMessage"] = "An error occurred while processing your request.";
-                return RedirectToAction("WarehouseInAdd",model);
+                return RedirectToAction("WarehouseInAdd", model);
             }
 
         }
@@ -119,7 +128,52 @@ namespace VMWeb.Controllers
                 TempData["ErrorMessage"] = $"Failed to delete WarehouseIn {getWI.InCode}!. Please try again";
                 return RedirectToAction("WarehouseInView");
             }
+
         }
 
+        public async Task<IActionResult> ExportToExcel(int inId)
+        {
+            // Lấy dữ liệu từ service hoặc model
+            var getWIByInId = await _warehouseInService.GetWarehouseInByInIdAsync(inId);
+            var getAllWIByInId = await _warehouseInService.GetWIDByInIdAsync(inId);
+
+            // Tạo file Excel
+            using (var package = new ExcelPackage())
+            {
+                var worksheet = package.Workbook.Worksheets.Add("WarehouseInDetails");
+
+                // Phần 1: Thông tin đơn hàng
+                worksheet.Cells[1, 1].Value = "In Code";
+                worksheet.Cells[1, 2].Value = "Supplier Name";
+                worksheet.Cells[1, 3].Value = "In Date";
+                worksheet.Cells[1, 4].Value = "Total Price In";
+
+                worksheet.Cells[2, 1].Value = getWIByInId.InCode;
+                worksheet.Cells[2, 2].Value = getWIByInId.SupplierName;
+                worksheet.Cells[2, 3].Value = getWIByInId.InDate;
+                worksheet.Cells[2, 4].Value = getWIByInId.TotalPriceIn;
+
+                // Phần 2: Chi tiết sản phẩm (dưới thông tin đơn hàng)
+                worksheet.Cells[4, 1].Value = "Product Name";
+                worksheet.Cells[4, 2].Value = "Quantity In";
+                worksheet.Cells[4, 3].Value = "Price In";
+                worksheet.Cells[4, 4].Value = "Total Price";
+
+                int row = 5;
+                foreach (var item in getAllWIByInId)
+                {
+                    worksheet.Cells[row, 1].Value = item.ProductName;
+                    worksheet.Cells[row, 2].Value = item.QuantityIn;
+                    worksheet.Cells[row, 3].Value = item.PriceIn;
+                    worksheet.Cells[row, 4].Value = item.TotalPrice;
+                    row++;
+                }
+
+                // Trả về file Excel cho người dùng
+                var fileContent = package.GetAsByteArray();
+                return File(fileContent, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "WarehouseInDetails.xlsx");
+            }
+
+        }
     }
 }
